@@ -1,5 +1,4 @@
 ﻿using BrightLib.StateMachine.Samples;
-using System;
 using UnityEngine;
 
 namespace BrightLib.StateMachine.Runtime
