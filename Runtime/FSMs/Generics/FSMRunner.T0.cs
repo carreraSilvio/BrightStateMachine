@@ -6,7 +6,7 @@ namespace BrightLib.StateMachine.Runtime
     /// Extend from this component to update your fsm
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class FSMRunner<T> : MonoBehaviour where T : Object
+    public abstract class FSMRunner<T> : MonoBehaviour where T : Component
     {
         [SerializeField]
         protected T _owner = default;

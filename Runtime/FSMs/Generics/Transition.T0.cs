@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace BrightLib.StateMachine.Runtime
 {
-    public class Transition<T> where T : UnityEngine.Object
+    public class Transition<T> where T : Component
     {
         private readonly State<T> _target;
         private readonly Func<bool> _condition;

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace BrightLib.StateMachine.Runtime
 {
-    public class FSM<T> where T : UnityEngine.Object
+    public class FSM<T> where T : Component
     {
+        private readonly static List<Transition<T>> _S_EMPTY_TRANSITIONS = new List<Transition<T>>();
+
         protected T _owner;
 
         protected State<T> _startState;
@@ -15,9 +18,9 @@ namespace BrightLib.StateMachine.Runtime
         private List<Transition<T>> _currentStateTransitions;
         private List<Transition<T>> _anyStateTransitions;
 
-        private readonly static List<Transition<T>> _S_EMPTY_TRANSITIONS = new List<Transition<T>>();
-
         public T Owner => _owner;
+        public T Component => Owner;
+        public GameObject GameObject => Owner.gameObject;
 
         public FSM(T owner)
         {

@@ -2,7 +2,7 @@
 
 namespace BrightLib.StateMachine.Runtime
 {
-    public abstract class State<T> where T : Object
+    public abstract class State<T> where T : Component
     {
         private T _owner;
         
