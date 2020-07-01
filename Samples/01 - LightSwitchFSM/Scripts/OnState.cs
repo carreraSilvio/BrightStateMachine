@@ -2,12 +2,11 @@
 
 namespace BrightLib.StateMachine.Samples.FSMSample
 {
-    public class OffState : State
+    public class OnState : State
     {
-
         public override void Enter()
         {
-            Log("Light OFF");
+            Log("Light ON");
         }
     }
 }

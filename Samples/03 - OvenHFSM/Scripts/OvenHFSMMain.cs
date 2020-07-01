@@ -1,23 +1,23 @@
 ﻿using BrightLib.StateMachine.Runtime;
 using UnityEngine;
 
-namespace BrightLib.StateMachine.Samples.FSMSample
+namespace BrightLib.StateMachine.Samples.HFSMSample
 {
-    public class SimpleFSMSample : MonoBehaviour
+    public class OvenHFSMMain : MonoBehaviour
     {
-        public Light _light;
-        protected FSM _fsm;
+        protected OvenHFSM _fsm;
 
         private void Start()
         {
-            _fsm = new LightSwitchFSM();
+            _fsm = new OvenHFSM();
             _fsm.ChangeToStartState();
             _fsm.OnStateChange += HandleStateChange;
         }
 
-        private void HandleStateChange(State state)
+        private void HandleStateChange(NestedState state)
         {
-            _light.enabled = !_light.enabled;
+            var stateName =  (state.IsChild ? state.ParentState.GetType().Name + "." : "") +  state.GetType().Name;
+            Debug.Log($"Entered State {stateName}");
         }
 
         private void Update()
@@ -29,5 +29,6 @@ namespace BrightLib.StateMachine.Samples.FSMSample
         {
             _fsm.LateUpdate();
         }
+
     }
 }

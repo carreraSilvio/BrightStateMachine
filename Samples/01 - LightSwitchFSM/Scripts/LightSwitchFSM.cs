@@ -1,7 +1,7 @@
 ﻿using BrightLib.StateMachine.Runtime;
 using UnityEngine;
 
-namespace BrightLib.StateMachine.Samples
+namespace BrightLib.StateMachine.Samples.FSMSample
 {
     public class LightSwitchFSM : FSM
     {

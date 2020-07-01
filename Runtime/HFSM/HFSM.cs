@@ -10,7 +10,7 @@ namespace BrightLib.StateMachine.Runtime
     {
         protected readonly static List<Transition<NestedState>> _S_EMPTY_TRANSITIONS = new List<Transition<NestedState>>();
 
-        public event Action<State> OnStateChange;
+        public event Action<NestedState> OnStateChange;
 
         protected NestedState _initialState;
         protected NestedState _currentState;
@@ -98,8 +98,8 @@ namespace BrightLib.StateMachine.Runtime
             var state = _currentState;
             while(state.IsChild)
             {
-                state = _currentState.ParentState;
-                if (!_transitions.TryGetValue(state.GetType(), out List<Transition<NestedState>> transitions))
+                state = state.ParentState;
+                if (_transitions.TryGetValue(state.GetType(), out List<Transition<NestedState>> transitions))
                 {
                     foreach (var transition in transitions)
                     {

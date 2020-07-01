@@ -1,13 +1,13 @@
 ﻿using BrightLib.StateMachine.Runtime;
 
-namespace BrightLib.StateMachine.Samples.FSMSample
+namespace BrightLib.StateMachine.Samples.HFSMSample
 {
-    public class OffState : State
+    public class OffState : NestedState
     {
 
         public override void Enter()
         {
-            Log("Light OFF");
+            
         }
     }
 }
