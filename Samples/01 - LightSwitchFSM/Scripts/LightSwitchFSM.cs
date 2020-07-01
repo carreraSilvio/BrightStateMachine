@@ -13,7 +13,7 @@ namespace BrightLib.StateMachine.Samples
             AddTransition(offState, onState, () => { return Input.GetKeyDown(KeyCode.Space);});
             AddTransition(onState, offState, () => { return Input.GetKeyDown(KeyCode.Space); });
 
-            _startState = offState;
+            _initialState = offState;
         }
 
     }

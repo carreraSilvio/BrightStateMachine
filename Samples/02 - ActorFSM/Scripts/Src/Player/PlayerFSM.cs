@@ -14,7 +14,7 @@ namespace BrightLib.StateMachine.Samples
             AddTransition(idleState, moveState, () => { return moveModule.IsMoving; });
             //AddTransition(moveState, idleState, () => { return !moveModule.IsMoving; });
 
-            _startState = idleState;
+            _initialState = idleState;
         }
 
         

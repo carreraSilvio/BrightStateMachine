@@ -9,7 +9,7 @@ namespace BrightLib.StateMachine.Runtime
 
         public event Action<State> OnStateChange;
 
-        protected State _startState;
+        protected State _initialState;
         protected State _currentState;
 
         protected Dictionary<Type, List<Transition>> _transitions;
@@ -26,9 +26,9 @@ namespace BrightLib.StateMachine.Runtime
 
         public void Update()
         {
-            if(CheckTransitions(out Transition transition))
+            if(CheckTransitions(out State state))
             {
-                ChangeState(transition.Target);
+                ChangeState(state);
             }
             _currentState.Update();
         }
@@ -38,7 +38,7 @@ namespace BrightLib.StateMachine.Runtime
             _currentState.LateUpdate();
         }
 
-        public void ChangeToStartState() => ChangeState(_startState);
+        public void ChangeToStartState() => ChangeState(_initialState);
 
         public void ChangeState(State targetState)
         {
@@ -72,13 +72,13 @@ namespace BrightLib.StateMachine.Runtime
             _anyStateTransitions.Add(new Transition(to, condition));
         }
 
-        private bool CheckTransitions(out Transition result)
+        private bool CheckTransitions(out State result)
         {
             foreach (var transition in _anyStateTransitions)
             {
                 if (transition.Condition())
                 {
-                    result = transition;
+                    result = transition.Target;
                     return true;
                 }
             }
@@ -87,7 +87,7 @@ namespace BrightLib.StateMachine.Runtime
             {
                 if (transition.Condition())
                 {
-                    result = transition;
+                    result = transition.Target;
                     return true;
                 }
             }

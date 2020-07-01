@@ -2,20 +2,18 @@
 
 namespace BrightLib.StateMachine.Runtime
 {
-    public class Transition
+    public class Transition<T0> where T0 : State
     {
-        protected readonly State _target;
+        protected readonly T0 _target;
         protected readonly Func<bool> _condition;
 
-        public State Target => _target;
+        public T0 Target => _target;
         public Func<bool> Condition => _condition;
 
-        public Transition(State target, Func<bool> func)
+        public Transition(T0 target, Func<bool> func)
         {
             _target = target;
             _condition = func;
         }
     }
-
-    
 }

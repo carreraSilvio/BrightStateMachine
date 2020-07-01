@@ -15,7 +15,7 @@ namespace BrightLib.StateMachine.Samples
             AddTransition(searchState, chaseState, () => { return searchModule.HasTarget; });
             AddTransition(chaseState, searchState, () => { return !searchModule.HasTarget; });
 
-            _startState = searchState;
+            _initialState = searchState;
         }
 
 
