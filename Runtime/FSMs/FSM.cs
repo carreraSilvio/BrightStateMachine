@@ -7,6 +7,8 @@ namespace BrightLib.StateMachine.Runtime
     {
         private readonly static List<Transition> _S_EMPTY_TRANSITIONS = new List<Transition>();
 
+        public event Action<State> OnStateChange;
+
         protected State _startState;
         protected State _currentState;
 
@@ -51,6 +53,7 @@ namespace BrightLib.StateMachine.Runtime
             }
 
             _currentState.Enter();
+            OnStateChange?.Invoke(_currentState);
         }
 
         public void AddTransition(State from, State to, Func<bool> condition)

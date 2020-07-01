@@ -1,21 +1,24 @@
 ﻿using BrightLib.StateMachine.Samples;
+using System;
 using UnityEngine;
 
 namespace BrightLib.StateMachine.Runtime
 {
     public class SimpleFSMSample : MonoBehaviour
-    {   
+    {
+        public Light _light;
         protected FSM _fsm;
-
-        private void Awake()
-        {
-            _fsm = new LightSwitchFSM();
-        }
 
         private void Start()
         {
-            if (_fsm == null) enabled = false;
+            _fsm = new LightSwitchFSM();
             _fsm.ChangeToStartState();
+            _fsm.OnStateChange += HandleStateChange;
+        }
+
+        private void HandleStateChange(State state)
+        {
+            _light.enabled = !_light.enabled;
         }
 
         private void Update()
