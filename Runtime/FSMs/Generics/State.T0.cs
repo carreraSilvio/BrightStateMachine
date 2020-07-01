@@ -2,38 +2,16 @@
 
 namespace BrightLib.StateMachine.Runtime
 {
-    public abstract class State<T> where T : Component
+    public abstract class State<T0> : State where T0 : Component
     {
-        private T _component;
+        private T0 _component;
         
-        public T Component => _component;
+        public T0 Component => _component;
         public GameObject GameObject => _component.gameObject;
 
-        public State(T component)
+        public State(T0 component)
         {
             _component = component;
         }
-
-        public virtual void Enter()
-        {
-
-        }
-
-        public virtual void Update()
-        {
-
-        }
-
-        public virtual void LateUpdate()
-        {
-
-        }
-
-        public virtual void Exit()
-        {
-            
-        }
-
-        public void Log(object message) => UnityEngine.Debug.Log(message);
     }
 }

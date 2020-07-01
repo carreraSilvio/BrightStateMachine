@@ -10,7 +10,7 @@ namespace BrightLib.StateMachine.Samples
             var moveState = CreateState<MoveState>();
 
             var moveModule = component.FetchModule<MovementModule>();
-
+            
             AddTransition(idleState, moveState, () => { return moveModule.IsMoving; });
             //AddTransition(moveState, idleState, () => { return !moveModule.IsMoving; });
 

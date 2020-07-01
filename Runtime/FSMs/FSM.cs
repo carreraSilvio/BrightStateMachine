@@ -5,7 +5,7 @@ namespace BrightLib.StateMachine.Runtime
 {
     public class FSM
     {
-        private readonly static List<Transition> _S_EMPTY_TRANSITIONS = new List<Transition>();
+        protected readonly static List<Transition> _S_EMPTY_TRANSITIONS = new List<Transition>();
 
         public event Action<State> OnStateChange;
 
@@ -14,8 +14,8 @@ namespace BrightLib.StateMachine.Runtime
 
         protected Dictionary<Type, List<Transition>> _transitions;
 
-        private List<Transition> _currentStateTransitions;
-        private List<Transition> _anyStateTransitions;
+        protected List<Transition> _currentStateTransitions;
+        protected List<Transition> _anyStateTransitions;
 
         public FSM()
         {
