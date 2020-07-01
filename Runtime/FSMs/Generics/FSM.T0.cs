@@ -8,7 +8,7 @@ namespace BrightLib.StateMachine.Runtime
     {
         private readonly static List<Transition<T>> _S_EMPTY_TRANSITIONS = new List<Transition<T>>();
 
-        protected T _owner;
+        protected T _component;
 
         protected State<T> _startState;
         private State<T> _currentState;
@@ -18,17 +18,16 @@ namespace BrightLib.StateMachine.Runtime
         private List<Transition<T>> _currentStateTransitions;
         private List<Transition<T>> _anyStateTransitions;
 
-        public T Owner => _owner;
-        public T Component => Owner;
-        public GameObject GameObject => Owner.gameObject;
+        public T Component => _component;
+        public GameObject GameObject => _component.gameObject;
 
-        public FSM(T owner)
+        public FSM(T component)
         {
             _transitions = new Dictionary<Type, List<Transition<T>>>();
             _currentStateTransitions = new List<Transition<T>>();
             _anyStateTransitions = new List<Transition<T>>();
 
-            _owner = owner;
+            _component = component;
         }
 
         public void Update()
@@ -104,7 +103,7 @@ namespace BrightLib.StateMachine.Runtime
 
         public T1 CreateState<T1>() where T1 : State<T>
         {
-            return (T1) System.Activator.CreateInstance(typeof(T1), new object[] { _owner });
+            return (T1) System.Activator.CreateInstance(typeof(T1), new object[] { _component });
         }
 
     }

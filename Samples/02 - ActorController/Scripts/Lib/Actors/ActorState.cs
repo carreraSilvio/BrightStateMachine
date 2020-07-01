@@ -4,8 +4,9 @@ namespace BrightLib.StateMachine.Samples
 {
     public class ActorState : State<Actor>
     {
-        public Actor Actor => Owner;
-        public ActorState(Actor owner) : base(owner)
+        public Actor Actor => Component;
+       
+        public ActorState(Actor actor) : base(actor)
         {
         }
     }

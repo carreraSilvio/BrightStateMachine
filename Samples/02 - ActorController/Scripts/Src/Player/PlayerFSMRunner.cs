@@ -6,7 +6,7 @@ namespace BrightLib.StateMachine.Samples
     {
         private void Start()
         {
-            _fsm = new PlayerFSM(_owner);
+            _fsm = new PlayerFSM(_component);
             _fsm.ChangeToStartState();
         }
 

@@ -4,7 +4,7 @@ namespace BrightLib.StateMachine.Samples
 {
     public class ChaseState : ActorState
     {
-        public ChaseState(Actor owner) : base(owner)
+        public ChaseState(Actor actor) : base(actor)
         {
         }
 

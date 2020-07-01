@@ -4,13 +4,14 @@ namespace BrightLib.StateMachine.Runtime
 {
     public abstract class State<T> where T : Component
     {
-        private T _owner;
+        private T _component;
         
-        public T Owner => _owner;
+        public T Component => _component;
+        public GameObject GameObject => _component.gameObject;
 
-        public State(T owner)
+        public State(T component)
         {
-            _owner = owner;
+            _component = component;
         }
 
         public virtual void Enter()

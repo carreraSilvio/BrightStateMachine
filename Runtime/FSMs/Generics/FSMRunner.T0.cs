@@ -9,7 +9,7 @@ namespace BrightLib.StateMachine.Runtime
     public abstract class FSMRunner<T> : MonoBehaviour where T : Component
     {
         [SerializeField]
-        protected T _owner = default;
+        protected T _component = default;
 
         protected FSM<T> _fsm;
 

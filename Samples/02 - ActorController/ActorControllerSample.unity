@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a2cb8de9ffbd847b9cbb6eb52a7534, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _owner: {fileID: 251998568}
+  _component: {fileID: 251998568}
 --- !u!4 &251998570
 Transform:
   m_ObjectHideFlags: 0
@@ -314,7 +314,7 @@ GameObject:
   - component: {fileID: 898017638}
   - component: {fileID: 898017637}
   m_Layer: 0
-  m_Name: Player1
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -362,7 +362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7071f415b3911ea4bb2062e22f6ea5d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _owner: {fileID: 898017637}
+  _component: {fileID: 898017637}
 --- !u!50 &898017639
 Rigidbody2D:
   serializedVersion: 4

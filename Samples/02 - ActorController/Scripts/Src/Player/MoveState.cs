@@ -4,7 +4,7 @@ namespace BrightLib.StateMachine.Samples
 {
     public class MoveState : ActorState
     {
-        public MoveState(Actor owner) : base(owner)
+        public MoveState(Actor actor) : base(actor)
         {
         }
 
@@ -13,7 +13,7 @@ namespace BrightLib.StateMachine.Samples
             var input = Input.GetAxis("Horizontal");
             var vertical = Input.GetAxis("Vertical");
 
-            Owner.FetchModule<MovementModule>().Move(input, vertical);
+            Actor.FetchModule<MovementModule>().Move(input, vertical);
         }
     }
 }

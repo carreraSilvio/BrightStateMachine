@@ -4,9 +4,7 @@ namespace BrightLib.StateMachine.Samples
 {
     public class SearchState : ActorState
     {
-       
-
-        public SearchState(Actor owner) : base(owner)
+        public SearchState(Actor actor) : base(actor)
         {
             
         }

@@ -4,12 +4,12 @@ namespace BrightLib.StateMachine.Samples
 {
     public class PlayerFSM : FSM<Actor>
     {
-        public PlayerFSM(Actor owner) : base(owner)
+        public PlayerFSM(Actor component) : base(component)
         {
             var idleState = CreateState<IdleState>();
             var moveState = CreateState<MoveState>();
 
-            var moveModule = owner.FetchModule<MovementModule>();
+            var moveModule = component.FetchModule<MovementModule>();
 
             AddTransition(idleState, moveState, () => { return moveModule.IsMoving; });
             //AddTransition(moveState, idleState, () => { return !moveModule.IsMoving; });

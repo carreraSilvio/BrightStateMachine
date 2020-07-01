@@ -2,7 +2,7 @@
 {
     public class IdleState : ActorState
     {
-        public IdleState(Actor owner) : base(owner)
+        public IdleState(Actor actor) : base(actor)
         {
         }
     }
