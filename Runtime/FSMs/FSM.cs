@@ -5,16 +5,15 @@ namespace BrightLib.StateMachine.Runtime
 {
     public class FSM
     {
-        protected State _startState;
+        private readonly static List<Transition> _S_EMPTY_TRANSITIONS = new List<Transition>();
 
+        protected State _startState;
         protected State _currentState;
 
         protected Dictionary<Type, List<Transition>> _transitions;
 
         private List<Transition> _currentStateTransitions;
         private List<Transition> _anyStateTransitions;
-
-        private readonly static List<Transition> _S_EMPTY_TRANSITIONS = new List<Transition>();
 
         public FSM()
         {
@@ -32,7 +31,7 @@ namespace BrightLib.StateMachine.Runtime
             _currentState.Update();
         }
 
-        internal void LateUpdate()
+        public void LateUpdate()
         {
             _currentState.LateUpdate();
         }
@@ -67,7 +66,6 @@ namespace BrightLib.StateMachine.Runtime
 
         public void AddAnyTransition(State to, Func<bool> condition)
         {
-
             _anyStateTransitions.Add(new Transition(to, condition));
         }
 
