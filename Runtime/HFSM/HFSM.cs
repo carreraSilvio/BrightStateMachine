@@ -3,7 +3,7 @@
 /// <summary>
 /// Allows the use of hierarchical states
 /// </summary>
-public class HFSM : MonoBehaviour
+public class HFSM 
 {
     // Start is called before the first frame update
     void Start()
