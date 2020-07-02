@@ -2,11 +2,8 @@
 
 namespace BrightLib.StateMachine.Samples.HFSMSample
 {
-    public class OnState : NestedState
+    public class OnState : ParentState
     {
-        public override void Enter()
-        {
-            
-        }
+        
     }
 }

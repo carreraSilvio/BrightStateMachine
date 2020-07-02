@@ -8,28 +8,28 @@ namespace BrightLib.StateMachine.Runtime
     /// </summary>
     public class HFSM
     {
-        protected readonly static List<Transition<NestedState>> _S_EMPTY_TRANSITIONS = new List<Transition<NestedState>>();
+        protected readonly static List<Transition<IState>> _S_EMPTY_TRANSITIONS = new List<Transition<IState>>();
 
-        public event Action<NestedState> OnStateChange;
+        public event Action<IState> OnStateChange;
 
-        protected NestedState _initialState;
-        protected NestedState _currentState;
+        protected IState _initialState;
+        protected IState _currentState;
 
-        protected Dictionary<Type, List<Transition<NestedState>>> _transitions;
+        protected Dictionary<Type, List<Transition<IState>>> _transitions;
 
-        protected List<Transition<NestedState>> _currentStateTransitions;
-        protected List<Transition<NestedState>> _anyStateTransitions;
+        protected List<Transition<IState>> _currentStateTransitions;
+        protected List<Transition<IState>> _anyStateTransitions;
 
         public HFSM()
         {
-            _transitions = new Dictionary<Type, List<Transition<NestedState>>>();
-            _currentStateTransitions = new List<Transition<NestedState>>();
-            _anyStateTransitions = new List<Transition<NestedState>>();
+            _transitions = new Dictionary<Type, List<Transition<IState>>>();
+            _currentStateTransitions = new List<Transition<IState>>();
+            _anyStateTransitions = new List<Transition<IState>>();
         }
 
         public void Update()
         {
-            if (CheckTransitions(out NestedState state))
+            if (CheckTransitions(out IState state))
             {
                 ChangeState(state);
             }
@@ -43,7 +43,7 @@ namespace BrightLib.StateMachine.Runtime
 
         public void ChangeToStartState() => ChangeState(_initialState);
 
-        public void ChangeState(NestedState targetState)
+        public void ChangeState(IState targetState)
         {
             if (targetState == _currentState) return;
 
@@ -59,29 +59,29 @@ namespace BrightLib.StateMachine.Runtime
             OnStateChange?.Invoke(_currentState);
         }
 
-        public void AddTransition(NestedState from, NestedState to, Func<bool> condition)
+        public void AddTransition(IState from, IState to, Func<bool> condition)
         {
-            if (!_transitions.TryGetValue(from.GetType(), out List<Transition<NestedState>> currentTransitions))
+            if (!_transitions.TryGetValue(from.GetType(), out List<Transition<IState>> currentTransitions))
             {
-                currentTransitions = new List<Transition<NestedState>>();
+                currentTransitions = new List<Transition<IState>>();
                 _transitions.Add(from.GetType(), currentTransitions);
             }
 
-            currentTransitions.Add(new Transition<NestedState>(to, condition));
+            currentTransitions.Add(new Transition<IState>(to, condition));
         }
 
         public void AddAnyTransition(NestedState to, Func<bool> condition)
         {
-            _anyStateTransitions.Add(new Transition<NestedState>(to, condition));
+            _anyStateTransitions.Add(new Transition<IState>(to, condition));
         }
 
-        private bool CheckTransitions(out NestedState result)
+        private bool CheckTransitions(out IState result)
         {
             foreach (var transition in _anyStateTransitions)
             {
                 if (transition.Condition())
                 {
-                    result = transition.Target.GetLeafChild();
+                    result = transition.Target is OrganizerState ? transition.Target.GetLeafChild() : ;
                     return true;
                 }
             }
@@ -99,7 +99,7 @@ namespace BrightLib.StateMachine.Runtime
             while(state.IsChild)
             {
                 state = state.ParentState;
-                if (_transitions.TryGetValue(state.GetType(), out List<Transition<NestedState>> transitions))
+                if (_transitions.TryGetValue(state.GetType(), out List<Transition<IState>> transitions))
                 {
                     foreach (var transition in transitions)
                     {

@@ -1,12 +1,9 @@
-﻿using System;
-using UnityEngine.Events;
-
-namespace BrightLib.StateMachine.Runtime
+﻿namespace BrightLib.StateMachine.Runtime
 {
     /// <summary>
-    /// Zero argument State
+    /// Abstract state class
     /// </summary>
-    public abstract class State
+    public abstract class State : IState
     {
         public virtual void Enter()
         {
