@@ -1,14 +1,40 @@
-﻿using BrightLib.StateMachine.Runtime;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
-/// <summary>
-/// An FSM or HSFM that has as stack of states and the current is always the one on top. Good for making menus.
-/// </summary>
-public class PushdownFSM
+namespace BrightLib.StateMachine.Runtime
 {
-    public Stack<State> _stack;
+    /// <summary>
+    /// A FSM that allows you to stack states
+    /// </summary>
+    public class PushdownFSM : FSM
+    {
+        private Stack<State> _stack;
 
-    public State CurrentState => _stack.Peek();
+        public PushdownFSM()
+        {
+            _stack = new Stack<State>();
+        }
 
+        public void PushState(State state)
+        {
+            _stack.Push(_currentState);
+            _currentState = state;
+            _currentState.Enter();
+        }
+
+        public void PopState()
+        {
+            _currentState.Exit();
+            _currentState = _stack.Pop();
+        }
+
+        public override void ChangeState(State targetState)
+        {
+            while (_stack.Peek() != null)
+            {
+                _stack.Pop().Exit();
+            }
+            base.ChangeState(targetState);
+        }
+
+    }
 }

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace BrightLib.StateMachine.Runtime
 {
+    /// <summary>
+    /// Finite-State Machine that allows you to control logic flow
+    /// </summary>
     public class FSM
     {
         protected readonly static List<Transition> _S_EMPTY_TRANSITIONS = new List<Transition>();
@@ -40,7 +43,7 @@ namespace BrightLib.StateMachine.Runtime
 
         public void ChangeToStartState() => ChangeState(_initialState);
 
-        public void ChangeState(State targetState)
+        public virtual void ChangeState(State targetState)
         {
             if (targetState == _currentState) return;
 

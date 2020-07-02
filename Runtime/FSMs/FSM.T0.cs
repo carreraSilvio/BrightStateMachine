@@ -2,6 +2,9 @@
 
 namespace BrightLib.StateMachine.Runtime
 {
+    /// <summary>
+    /// <see cref="FSM"/> with a generic field added to ease state creation
+    /// </summary>
     public class FSM<T0> : FSM where T0 : Component
     {
         protected T0 _component;
@@ -15,7 +18,7 @@ namespace BrightLib.StateMachine.Runtime
         }
 
         /// <summary>
-        /// Creates a state of type T and injects the <see cref="Component"/> 
+        /// Creates a state of type T1 and injects the <see cref="Component"/>
         /// </summary>
         public T1 CreateState<T1>() where T1 : State<T0>
         {
