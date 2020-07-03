@@ -8,28 +8,29 @@ namespace BrightLib.StateMachine.Runtime
     /// </summary>
     public class HFSM
     {
-        protected readonly static List<Transition<IState>> _S_EMPTY_TRANSITIONS = new List<Transition<IState>>();
+        protected readonly static List<HFSMTransition> _S_EMPTY_TRANSITIONS = new List<HFSMTransition>();
 
-        public event Action<IState> OnStateChange;
+        public event Action<HFSMState> OnStateEnter;
+        public event Action<HFSMState> OnStateExit;
 
-        protected IState _initialState;
-        protected IState _currentState;
+        protected HFSMState _initialState;
+        protected HFSMState _currentState;
 
-        protected Dictionary<Type, List<Transition<IState>>> _transitions;
+        protected Dictionary<Type, List<HFSMTransition>> _transitions;
 
-        protected List<Transition<IState>> _currentStateTransitions;
-        protected List<Transition<IState>> _anyStateTransitions;
+        protected List<HFSMTransition> _currentStateTransitions;
+        protected List<HFSMTransition> _anyStateTransitions;
 
         public HFSM()
         {
-            _transitions = new Dictionary<Type, List<Transition<IState>>>();
-            _currentStateTransitions = new List<Transition<IState>>();
-            _anyStateTransitions = new List<Transition<IState>>();
+            _transitions = new Dictionary<Type, List<HFSMTransition>>();
+            _currentStateTransitions = new List<HFSMTransition>();
+            _anyStateTransitions = new List<HFSMTransition>();
         }
 
         public void Update()
         {
-            if (CheckTransitions(out IState state))
+            if (CheckTransitions(out HFSMState state))
             {
                 ChangeState(state);
             }
@@ -43,10 +44,11 @@ namespace BrightLib.StateMachine.Runtime
 
         public void ChangeToStartState() => ChangeState(_initialState);
 
-        public void ChangeState(IState targetState)
+        public void ChangeState(HFSMState targetState)
         {
             if (targetState == _currentState) return;
 
+            var previousState = _currentState;
             _currentState?.Exit();
             _currentState = targetState;
 
@@ -56,32 +58,33 @@ namespace BrightLib.StateMachine.Runtime
             }
 
             _currentState.Enter();
-            OnStateChange?.Invoke(_currentState);
+            if (previousState != null) OnStateExit?.Invoke(previousState);
+            OnStateEnter?.Invoke(_currentState);
         }
 
-        public void AddTransition(IState from, IState to, Func<bool> condition)
+        public void AddTransition(HFSMState from, HFSMState to, Func<bool> condition)
         {
-            if (!_transitions.TryGetValue(from.GetType(), out List<Transition<IState>> currentTransitions))
+            if (!_transitions.TryGetValue(from.GetType(), out List<HFSMTransition> currentTransitions))
             {
-                currentTransitions = new List<Transition<IState>>();
+                currentTransitions = new List<HFSMTransition>();
                 _transitions.Add(from.GetType(), currentTransitions);
             }
 
-            currentTransitions.Add(new Transition<IState>(to, condition));
+            currentTransitions.Add(new HFSMTransition(to, condition));
         }
 
-        public void AddAnyTransition(NestedState to, Func<bool> condition)
+        public void AddAnyTransition(HFSMState to, Func<bool> condition)
         {
-            _anyStateTransitions.Add(new Transition<IState>(to, condition));
+            _anyStateTransitions.Add(new HFSMTransition(to, condition));
         }
 
-        private bool CheckTransitions(out IState result)
+        private bool CheckTransitions(out HFSMState result)
         {
             foreach (var transition in _anyStateTransitions)
             {
                 if (transition.Condition())
                 {
-                    result = transition.Target is OrganizerState ? transition.Target.GetLeafChild() : ;
+                    result = GetLeafState(transition.Target);
                     return true;
                 }
             }
@@ -90,31 +93,40 @@ namespace BrightLib.StateMachine.Runtime
             {
                 if (transition.Condition())
                 {
-                    result = transition.Target.GetLeafChild();
+                    result = GetLeafState(transition.Target);
                     return true;
                 }
             }
 
             var state = _currentState;
-            while(state.IsChild)
+            while(state.HasParentState)
             {
                 state = state.ParentState;
-                if (_transitions.TryGetValue(state.GetType(), out List<Transition<IState>> transitions))
+                if (_transitions.TryGetValue(state.GetType(), out List<HFSMTransition> parentStateTransitions))
                 {
-                    foreach (var transition in transitions)
+                    foreach (var transition in parentStateTransitions)
                     {
                         if (transition.Condition())
                         {
-                            result = transition.Target.GetLeafChild();
+                            result = GetLeafState(transition.Target);
                             return true;
                         }
                     }
                 }
             }
-            
 
             result = default;
             return false;
         }
+
+        private HFSMState GetLeafState(HFSMState state)
+        {
+            if (state is CompositeState compositeState)
+            {
+                return compositeState.GetLeafState();
+            }
+            return state;
+        }
     }
+
 }

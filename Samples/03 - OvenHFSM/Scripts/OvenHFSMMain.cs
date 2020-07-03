@@ -11,13 +11,20 @@ namespace BrightLib.StateMachine.Samples.HFSMSample
         {
             _fsm = new OvenHFSM();
             _fsm.ChangeToStartState();
-            _fsm.OnStateChange += HandleStateChange;
+            _fsm.OnStateExit += HandleStatExit;
+            _fsm.OnStateEnter += HandleStateEnter;
         }
 
-        private void HandleStateChange(NestedState state)
+        private void HandleStatExit(HFSMState state)
         {
-            var stateName =  (state.IsChild ? state.ParentState.GetType().Name + "." : "") +  state.GetType().Name;
-            Debug.Log($"Entered State {stateName}");
+            var stateName = (state.HasParentState ? state.ParentState.GetType().Name + "." : "") + state.GetType().Name;
+            Debug.Log($"Exit State \t{stateName}");
+        }
+
+        private void HandleStateEnter(HFSMState state)
+        {
+            var stateName =  (state.HasParentState ? state.ParentState.GetType().Name + "." : "") +  state.GetType().Name;
+            Debug.Log($"Enter State \t{stateName}");
         }
 
         private void Update()

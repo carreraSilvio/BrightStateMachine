@@ -2,7 +2,7 @@
 
 namespace BrightLib.StateMachine.Samples.HFSMSample
 {
-    public class OnState : ParentState
+    public class OnState : CompositeState
     {
         
     }

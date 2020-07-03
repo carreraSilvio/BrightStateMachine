@@ -3,7 +3,7 @@
     /// <summary>
     /// Abstract state class
     /// </summary>
-    public abstract class State : IState
+    public abstract class State
     {
         public virtual void Enter()
         {

@@ -1,5 +1,4 @@
 ﻿using BrightLib.StateMachine.Runtime;
-using System;
 using UnityEngine;
 
 namespace BrightLib.StateMachine.Samples.HFSMSample
@@ -22,9 +21,8 @@ namespace BrightLib.StateMachine.Samples.HFSMSample
             var heatingUpState = new HeatingUpState();
             var heatedUpState = new HeatedUpState();
 
-            onState.SetInitialState(heatingUpState);
-            heatingUpState.SetParentState(onState);
-            heatedUpState.SetParentState(onState);
+            onState.AddChildAsInitialState(heatingUpState);
+            onState.AddChild(heatedUpState);
 
             AddTransition(offState, onState, () => { return Input.GetKeyDown(KeyCode.W); });
             AddTransition(onState, offState, () => { return Input.GetKeyDown(KeyCode.S); });
