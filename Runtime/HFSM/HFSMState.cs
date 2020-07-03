@@ -36,5 +36,21 @@
         {
 
         }
+
+        /// <summary>
+        /// Returns a State name up to the root HFSMState. Eg: ParentStateName.SubParentStateName.StateName
+        /// </summary>
+        public string FullName()
+        {
+            var fullName = "";
+            var state = this;
+            while (state.HasParentState)
+            {
+                fullName += state.ParentState.GetType().Name  + ".";
+                state = state.ParentState;
+            }
+            fullName += GetType().Name;
+            return fullName;
+        }
     }
 }

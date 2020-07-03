@@ -17,14 +17,12 @@ namespace BrightLib.StateMachine.Samples.HFSMSample
 
         private void HandleStatExit(HFSMState state)
         {
-            var stateName = (state.HasParentState ? state.ParentState.GetType().Name + "." : "") + state.GetType().Name;
-            Debug.Log($"Exit State \t{stateName}");
+            Debug.Log($"Exit State \t{state.FullName()}");
         }
 
         private void HandleStateEnter(HFSMState state)
         {
-            var stateName =  (state.HasParentState ? state.ParentState.GetType().Name + "." : "") +  state.GetType().Name;
-            Debug.Log($"Enter State \t{stateName}");
+            Debug.Log($"Enter State \t{state.FullName()}");
         }
 
         private void Update()
