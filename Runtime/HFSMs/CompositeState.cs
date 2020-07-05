@@ -31,7 +31,7 @@ namespace BrightLib.StateMachine.Runtime
         }
 
         /// <summary>
-        /// Return the first non-composite HFSM state
+        /// Return the first non-composite state
         /// </summary>
         public State GetLeafState()
         {

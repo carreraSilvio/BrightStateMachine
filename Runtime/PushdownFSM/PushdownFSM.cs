@@ -3,7 +3,7 @@
 namespace BrightLib.StateMachine.Runtime
 {
     /// <summary>
-    /// A FSM that allows you to stack states
+    /// A FSM that allows you to stack states and keep a history
     /// </summary>
     public class PushdownFSM : FSM
     {
@@ -35,6 +35,11 @@ namespace BrightLib.StateMachine.Runtime
             }
             base.ChangeState(targetState);
         }
+
+        //public void AddToPreviousTransition(State to, Func<bool> condition)
+        //{
+        //    _anyStateTransitions.Add(new Transition(to, condition));
+        //}
 
     }
 }

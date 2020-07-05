@@ -1,8 +1,7 @@
 ﻿using BrightLib.StateMachine.Runtime;
-using UnityEngine;
 
 /// <summary>
-/// Manages multiple FSMs or HFSMs. Has internal EventSystem that FSM states can fire to alter other fsm.
+/// Manages multiple FSMs
 /// </summary>
 public class LayeredFSM
 {

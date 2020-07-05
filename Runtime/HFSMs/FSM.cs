@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace BrightLib.StateMachine.Runtime
 {
     /// <summary>
-    /// Allows the use of nested states that share transitions
+    /// Core FSM class
     /// </summary>
     public class FSM
     {
