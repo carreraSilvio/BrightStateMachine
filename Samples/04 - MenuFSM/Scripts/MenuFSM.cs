@@ -21,15 +21,14 @@ namespace BrightLib.StateMachine.Samples.HFSMSample
             var audioOptionsState = new AudioOptionsState();
             var controlsState = new ControlsState();
 
-            AddPushTransition(homeState, optionsState, () => { return Input.GetKeyDown(KeyCode.Space); });
+            AddOverlapTransition(homeState, optionsState, () => { return Input.GetKeyDown(KeyCode.Space); });
 
-            AddPushTransition(optionsState, controlsState, () => { return Input.GetKeyDown(KeyCode.Alpha1); });
-            AddPushTransition(optionsState, audioOptionsState, () => { return Input.GetKeyDown(KeyCode.Alpha2); });
-            AddPopTransition(optionsState, () => { return Input.GetKeyDown(KeyCode.Escape); });
+            AddOverlapTransition(optionsState, controlsState, () => { return Input.GetKeyDown(KeyCode.Alpha1); });
+            AddOverlapTransition(optionsState, audioOptionsState, () => { return Input.GetKeyDown(KeyCode.Alpha2); });
+            AddReturnTransition(optionsState, () => { return Input.GetKeyDown(KeyCode.Escape); });
 
-
-            AddPopTransition(controlsState, () => { return Input.GetKeyDown(KeyCode.Escape); });
-            AddPopTransition(audioOptionsState, () => { return Input.GetKeyDown(KeyCode.Escape); });
+            AddReturnTransition(controlsState, () => { return Input.GetKeyDown(KeyCode.Escape); });
+            AddReturnTransition(audioOptionsState, () => { return Input.GetKeyDown(KeyCode.Escape); });
 
             _initialState = homeState;
 

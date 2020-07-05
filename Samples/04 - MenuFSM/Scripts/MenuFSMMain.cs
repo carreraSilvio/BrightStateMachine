@@ -10,9 +10,10 @@ namespace BrightLib.StateMachine.Samples.HFSMSample
         private void Start()
         {
             _fsm = new MenuFSM();
-            _fsm.ChangeStateToInitialState();
             _fsm.OnStateExit += HandleStatExit;
             _fsm.OnStateEnter += HandleStateEnter;
+
+            _fsm.ChangeStateToInitialState();
         }
 
         private void HandleStatExit(State state)

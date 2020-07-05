@@ -3,18 +3,35 @@ using System.Collections.Generic;
 
 namespace BrightLib.StateMachine.Runtime
 {
+    public struct StateInfo
+    {
+        public List<Transition> PushTransitions { get; set; }
+        public List<Transition> PopTransitions { get; set; }
+    }
+
+
     /// <summary>
-    /// A FSM that allows you to stack states and keep a history
+    /// A FSM that allows you to stack states to return to
     /// </summary>
     public class PushdownFSM : FSM
     {
-        private Stack<State> _stack;
+        /// <summary>
+        /// Called when your return to a state that was overlapped
+        /// </summary>
+        public event Action<State> OnStateFocus;
+
+        /// <summary>
+        /// Called when a state is overlapped by another
+        /// </summary>
+        public event Action<State> OnStateObscure;
 
         protected Dictionary<Type, List<Transition>> _pushTransitions;
         protected Dictionary<Type, List<Transition>> _popTransitions;
 
         protected List<Transition> _currentStatePushTransitions;
         protected List<Transition> _currentStatePopTransitions;
+
+        private readonly Stack<State> _stack;
 
         public PushdownFSM()
         {
@@ -26,7 +43,7 @@ namespace BrightLib.StateMachine.Runtime
             _currentStatePopTransitions = new List<Transition>();
         }
 
-        public override void Update()
+        public sealed override void Update()
         {
             if (CheckTransitions(out State state))
             {
@@ -43,17 +60,38 @@ namespace BrightLib.StateMachine.Runtime
             _currentState.Update();
         }
 
+        /// <summary>
+        /// Will enter the <paramref name="to"/> state and save the <paramref name="from"/> state in a stack you can return to
+        /// </summary>
+        public void AddOverlapTransition(State from, State to, Func<bool> condition)
+        {
+            if (!_pushTransitions.TryGetValue(from.GetType(), out List<Transition> currentPushTransitions))
+            {
+                currentPushTransitions = new List<Transition>();
+                _pushTransitions.Add(from.GetType(), currentPushTransitions);
+            }
+
+            currentPushTransitions.Add(new Transition(to, condition));
+        }
+
+        /// <summary>
+        /// Will exit the <paramref name="from"/> state and return the previous one on the stack
+        /// </summary>
+        public void AddReturnTransition(State from, Func<bool> condition)
+        {
+            if (!_popTransitions.TryGetValue(from.GetType(), out List<Transition> currentPushTransitions))
+            {
+                currentPushTransitions = new List<Transition>();
+                _popTransitions.Add(from.GetType(), currentPushTransitions);
+            }
+
+            currentPushTransitions.Add(new PopTransition(condition));
+        }
+
         private void PushState(State state)
         {
             _stack.Push(_currentState);
-            //_currentState = state;
-            //_currentState.Enter();
             EnterState(state);
-
-            if (!_transitions.TryGetValue(_currentState.GetType(), out _currentStateTransitions))
-            {
-                _currentStateTransitions = _S_EMPTY_TRANSITIONS;
-            }
 
             if (!_pushTransitions.TryGetValue(_currentState.GetType(), out _currentStatePushTransitions))
             {
@@ -68,17 +106,20 @@ namespace BrightLib.StateMachine.Runtime
 
         private void PopState()
         {
+            if (_stack.Count == 0) return;
+
             _currentState.Exit();
             _currentState = _stack.Pop();
         }
 
         protected sealed override void ChangeState(State targetState)
         {
+            ExitCurrentState();
             while (_stack.Count > 0 && _stack.Peek() != null)
             {
                 _stack.Pop().Exit();
             }
-            base.ChangeState(targetState);
+            EnterState(targetState);
 
             if (!_pushTransitions.TryGetValue(_currentState.GetType(), out _currentStatePushTransitions))
             {
@@ -91,37 +132,9 @@ namespace BrightLib.StateMachine.Runtime
             }
         }
 
-        /// <summary>
-        /// When in state <paramref name="from"/>, if <paramref name="condition"/> is true then enter state <paramref name="to"/>. Current state will be put on a stack.
-        /// </summary>
-        public void AddPushTransition(State from, State to, Func<bool> condition)
+        private bool CheckPushTransitions(out State result)
         {
-            if (!_pushTransitions.TryGetValue(from.GetType(), out List<Transition> currentPushTransitions))
-            {
-                currentPushTransitions = new List<Transition>();
-                _pushTransitions.Add(from.GetType(), currentPushTransitions);
-            }
-
-            currentPushTransitions.Add(new Transition(to, condition));
-        }
-
-        /// <summary>
-        /// When in state <paramref name="from"/>, if <paramref name="condition"/> is true then exit <paramref name="from"/> state and return to previous state on the stack.
-        /// </summary>
-        public void AddPopTransition(State from, Func<bool> condition)
-        {
-            if (!_pushTransitions.TryGetValue(from.GetType(), out List<Transition> currentPushTransitions))
-            {
-                currentPushTransitions = new List<Transition>();
-                _pushTransitions.Add(from.GetType(), currentPushTransitions);
-            }
-
-            currentPushTransitions.Add(new PopTransition(condition));
-        }
-
-        protected bool CheckPushTransitions(out State result)
-        {
-            foreach (var transition in _anyStateTransitions)
+            foreach (var transition in _currentStatePushTransitions)
             {
                 if (transition.Condition())
                 {
@@ -134,9 +147,9 @@ namespace BrightLib.StateMachine.Runtime
             return false;
         }
 
-        protected bool CheckPopTransitions()
+        private bool CheckPopTransitions()
         {
-            foreach (var transition in _anyStateTransitions)
+            foreach (var transition in _currentStatePopTransitions)
             {
                 if (transition.Condition())
                 {

@@ -69,10 +69,8 @@ namespace BrightLib.StateMachine.Runtime
         {
             if (_currentState == null) return;
 
-            var exittedState = _currentState; 
+            OnStateExit?.Invoke(_currentState);
             _currentState = null;
-
-            if (exittedState != null) OnStateExit?.Invoke(exittedState);
         }
 
         public void AddTransition(State from, State to, Func<bool> condition)
