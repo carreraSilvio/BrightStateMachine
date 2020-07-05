@@ -3,12 +3,6 @@ using System.Collections.Generic;
 
 namespace BrightLib.StateMachine.Runtime
 {
-    public struct StateInfo
-    {
-        public List<Transition> PushTransitions { get; set; }
-        public List<Transition> PopTransitions { get; set; }
-    }
-
 
     /// <summary>
     /// A FSM that allows you to stack states to return to
@@ -28,8 +22,7 @@ namespace BrightLib.StateMachine.Runtime
         protected Dictionary<Type, List<Transition>> _pushTransitions;
         protected Dictionary<Type, List<Transition>> _popTransitions;
 
-        protected List<Transition> _currentStatePushTransitions;
-        protected List<Transition> _currentStatePopTransitions;
+        protected StateInfo _currentStateInfo;
 
         private readonly Stack<State> _stack;
 
@@ -39,8 +32,8 @@ namespace BrightLib.StateMachine.Runtime
             _pushTransitions = new Dictionary<Type, List<Transition>>();
             _popTransitions = new Dictionary<Type, List<Transition>>();
 
-            _currentStatePushTransitions = new List<Transition>();
-            _currentStatePopTransitions = new List<Transition>();
+            _currentStateInfo.overlapTransitions = new List<Transition>();
+            _currentStateInfo.returnTransitions = new List<Transition>();
         }
 
         public sealed override void Update()
@@ -93,16 +86,7 @@ namespace BrightLib.StateMachine.Runtime
             _stack.Push(_currentState);
             OnStateObscure?.Invoke(_currentState);
             EnterState(state);
-
-            if (!_pushTransitions.TryGetValue(_currentState.GetType(), out _currentStatePushTransitions))
-            {
-                _currentStatePushTransitions = _S_EMPTY_TRANSITIONS;
-            }
-
-            if (!_popTransitions.TryGetValue(_currentState.GetType(), out _currentStatePopTransitions))
-            {
-                _currentStatePopTransitions = _S_EMPTY_TRANSITIONS;
-            }
+            UpdateCurrentStateInfo(state);
         }
 
         private void ReturnToPreviousState()
@@ -113,15 +97,7 @@ namespace BrightLib.StateMachine.Runtime
             _currentState = _stack.Pop();
             OnStateFocus?.Invoke(_currentState);
 
-            if (!_pushTransitions.TryGetValue(_currentState.GetType(), out _currentStatePushTransitions))
-            {
-                _currentStatePushTransitions = _S_EMPTY_TRANSITIONS;
-            }
-
-            if (!_popTransitions.TryGetValue(_currentState.GetType(), out _currentStatePopTransitions))
-            {
-                _currentStatePopTransitions = _S_EMPTY_TRANSITIONS;
-            }
+            UpdateCurrentStateInfo(_currentState);
         }
 
         protected sealed override void ChangeState(State targetState)
@@ -132,21 +108,12 @@ namespace BrightLib.StateMachine.Runtime
                 _stack.Pop().Exit();
             }
             EnterState(targetState);
-
-            if (!_pushTransitions.TryGetValue(_currentState.GetType(), out _currentStatePushTransitions))
-            {
-                _currentStatePushTransitions = _S_EMPTY_TRANSITIONS;
-            }
-
-            if (!_popTransitions.TryGetValue(_currentState.GetType(), out _currentStatePopTransitions))
-            {
-                _currentStatePopTransitions = _S_EMPTY_TRANSITIONS;
-            }
+            UpdateCurrentStateInfo(targetState);
         }
 
         private bool CheckPushTransitions(out State result)
         {
-            foreach (var transition in _currentStatePushTransitions)
+            foreach (var transition in _currentStateInfo.overlapTransitions)
             {
                 if (transition.Condition())
                 {
@@ -161,7 +128,7 @@ namespace BrightLib.StateMachine.Runtime
 
         private bool CheckPopTransitions()
         {
-            foreach (var transition in _currentStatePopTransitions)
+            foreach (var transition in _currentStateInfo.returnTransitions)
             {
                 if (transition.Condition())
                 {
@@ -170,6 +137,19 @@ namespace BrightLib.StateMachine.Runtime
             }
 
             return false;
+        }
+
+        private void UpdateCurrentStateInfo(State state)
+        {
+            if (!_pushTransitions.TryGetValue(state.GetType(), out _currentStateInfo.overlapTransitions))
+            {
+                _currentStateInfo.overlapTransitions = _S_EMPTY_TRANSITIONS;
+            }
+
+            if (!_popTransitions.TryGetValue(state.GetType(), out _currentStateInfo.returnTransitions))
+            {
+                _currentStateInfo.returnTransitions = _S_EMPTY_TRANSITIONS;
+            }
         }
 
 
