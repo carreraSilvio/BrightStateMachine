@@ -2,7 +2,7 @@
 
 namespace BrightLib.StateMachine.Samples
 {
-    public class ActorState : State<Actor>
+    public class ActorState : HFSMState<Actor>
     {
         public Actor Actor => Component;
        

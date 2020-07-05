@@ -6,16 +6,16 @@ namespace BrightLib.StateMachine.Samples.FSMSample
     public class SimpleFSMSample : MonoBehaviour
     {
         public Light _light;
-        protected FSM _fsm;
+        protected HFSM _fsm;
 
         private void Start()
         {
             _fsm = new LightSwitchFSM();
             _fsm.ChangeToStartState();
-            _fsm.OnStateChange += HandleStateChange;
+            _fsm.OnStateEnter += HandleStateChange;
         }
 
-        private void HandleStateChange(State state)
+        private void HandleStateChange(HFSMState state)
         {
             _light.enabled = !_light.enabled;
         }
