@@ -49,13 +49,13 @@ namespace BrightLib.StateMachine.Runtime
             {
                 ChangeState(state);
             }
-            if (CheckPushTransitions(out State pushState))
+            else if (CheckPushTransitions(out State pushState))
             {
-                PushState(pushState);
+                OverlapState(pushState);
             }
-            if (CheckPopTransitions())
+            else if (CheckPopTransitions())
             {
-                PopState();
+                ReturnToPreviousState();
             }
             _currentState.Update();
         }
@@ -88,9 +88,10 @@ namespace BrightLib.StateMachine.Runtime
             currentPushTransitions.Add(new PopTransition(condition));
         }
 
-        private void PushState(State state)
+        private void OverlapState(State state)
         {
             _stack.Push(_currentState);
+            OnStateObscure?.Invoke(_currentState);
             EnterState(state);
 
             if (!_pushTransitions.TryGetValue(_currentState.GetType(), out _currentStatePushTransitions))
@@ -104,12 +105,23 @@ namespace BrightLib.StateMachine.Runtime
             }
         }
 
-        private void PopState()
+        private void ReturnToPreviousState()
         {
             if (_stack.Count == 0) return;
 
-            _currentState.Exit();
+            ExitCurrentState();
             _currentState = _stack.Pop();
+            OnStateFocus?.Invoke(_currentState);
+
+            if (!_pushTransitions.TryGetValue(_currentState.GetType(), out _currentStatePushTransitions))
+            {
+                _currentStatePushTransitions = _S_EMPTY_TRANSITIONS;
+            }
+
+            if (!_popTransitions.TryGetValue(_currentState.GetType(), out _currentStatePopTransitions))
+            {
+                _currentStatePopTransitions = _S_EMPTY_TRANSITIONS;
+            }
         }
 
         protected sealed override void ChangeState(State targetState)
