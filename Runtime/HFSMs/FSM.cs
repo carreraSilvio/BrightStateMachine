@@ -28,7 +28,7 @@ namespace BrightLib.StateMachine.Runtime
             _anyStateTransitions = new List<Transition>();
         }
 
-        public void Update()
+        public virtual void Update()
         {
             if (CheckTransitions(out State state))
             {
@@ -44,7 +44,7 @@ namespace BrightLib.StateMachine.Runtime
 
         public void ChangeToStartState() => ChangeState(_initialState);
 
-        public virtual void ChangeState(State targetState)
+        protected virtual void ChangeState(State targetState)
         {
             if (targetState == _currentState) return;
 
@@ -78,7 +78,7 @@ namespace BrightLib.StateMachine.Runtime
             _anyStateTransitions.Add(new Transition(to, condition));
         }
 
-        private bool CheckTransitions(out State result)
+        protected bool CheckTransitions(out State result)
         {
             foreach (var transition in _anyStateTransitions)
             {
@@ -119,7 +119,7 @@ namespace BrightLib.StateMachine.Runtime
             return false;
         }
 
-        private State GetLeafState(State state)
+        protected State GetLeafState(State state)
         {
             if (state is CompositeState compositeState)
             {
