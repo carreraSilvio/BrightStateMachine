@@ -7,7 +7,6 @@ namespace BrightLib.StateMachine.Samples.HFSMSample
     public class MenuFSMMain : MonoBehaviour
     {
         protected MenuFSM _fsm;
-
         private void Start()
         {
             _fsm = new MenuFSM();

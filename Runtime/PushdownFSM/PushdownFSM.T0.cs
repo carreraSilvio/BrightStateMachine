@@ -7,7 +7,7 @@ namespace BrightLib.StateMachine.Runtime
     /// </summary>
     public class PushdownFSM<T0> : PushdownFSM where T0 : Component
     {
-        protected T0 _component;
+        private readonly T0 _component;
 
         public T0 Component => _component;
         public GameObject GameObject => _component.gameObject;

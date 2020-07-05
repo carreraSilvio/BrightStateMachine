@@ -3,7 +3,7 @@
 namespace BrightLib.StateMachine.Runtime
 {
     /// <summary>
-    /// <see cref="FSM"/> with a generic field added to ease state creation
+    /// <see cref="FSM"/> with easy access to the component and game object
     /// </summary>
     public class FSM<T0> : FSM where T0 : Component
     {

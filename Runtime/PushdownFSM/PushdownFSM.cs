@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace BrightLib.StateMachine.Runtime
 {
-
     /// <summary>
     /// A FSM that allows you to stack states to return to
     /// </summary>
@@ -78,7 +77,7 @@ namespace BrightLib.StateMachine.Runtime
                 _popTransitions.Add(from.GetType(), currentPushTransitions);
             }
 
-            currentPushTransitions.Add(new PopTransition(condition));
+            currentPushTransitions.Add(new ReturnTransition(condition));
         }
 
         private void OverlapState(State state)
