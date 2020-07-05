@@ -15,12 +15,12 @@ namespace BrightLib.StateMachine.Samples.HFSMSample
             _fsm.OnStateEnter += HandleStateEnter;
         }
 
-        private void HandleStatExit(HFSMState state)
+        private void HandleStatExit(State state)
         {
             Debug.Log($"Exit State \t{state.FullName()}");
         }
 
-        private void HandleStateEnter(HFSMState state)
+        private void HandleStateEnter(State state)
         {
             Debug.Log($"Enter State \t{state.FullName()}");
         }

@@ -2,7 +2,7 @@
 
 namespace BrightLib.StateMachine.Samples.HFSMSample
 {
-    public class HeatingUpState : HFSMState
+    public class HeatingUpState : State
     {
         public override void Enter()
         {

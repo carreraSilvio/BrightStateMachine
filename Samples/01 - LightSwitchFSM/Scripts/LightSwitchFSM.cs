@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace BrightLib.StateMachine.Samples.FSMSample
 {
-    public class LightSwitchFSM : HFSM
+    public class LightSwitchFSM : FSM
     {
         public LightSwitchFSM()
         {

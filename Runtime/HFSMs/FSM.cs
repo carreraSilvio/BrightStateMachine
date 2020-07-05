@@ -4,13 +4,14 @@ using System.Collections.Generic;
 namespace BrightLib.StateMachine.Runtime
 {
     /// <summary>
-    /// Finite-State Machine that allows you to control logic flow
+    /// Allows the use of nested states that share transitions
     /// </summary>
     public class FSM
     {
         protected readonly static List<Transition> _S_EMPTY_TRANSITIONS = new List<Transition>();
 
-        public event Action<State> OnStateChange;
+        public event Action<State> OnStateEnter;
+        public event Action<State> OnStateExit;
 
         protected State _initialState;
         protected State _currentState;
@@ -29,7 +30,7 @@ namespace BrightLib.StateMachine.Runtime
 
         public void Update()
         {
-            if(CheckTransitions(out State state))
+            if (CheckTransitions(out State state))
             {
                 ChangeState(state);
             }
@@ -47,26 +48,28 @@ namespace BrightLib.StateMachine.Runtime
         {
             if (targetState == _currentState) return;
 
+            var previousState = _currentState;
             _currentState?.Exit();
             _currentState = targetState;
 
-            if(!_transitions.TryGetValue(_currentState.GetType(), out _currentStateTransitions))
+            if (!_transitions.TryGetValue(_currentState.GetType(), out _currentStateTransitions))
             {
                 _currentStateTransitions = _S_EMPTY_TRANSITIONS;
             }
 
             _currentState.Enter();
-            OnStateChange?.Invoke(_currentState);
+            if (previousState != null) OnStateExit?.Invoke(previousState);
+            OnStateEnter?.Invoke(_currentState);
         }
 
         public void AddTransition(State from, State to, Func<bool> condition)
         {
-            if(!_transitions.TryGetValue(from.GetType(), out List<Transition> currentTransitions))
+            if (!_transitions.TryGetValue(from.GetType(), out List<Transition> currentTransitions))
             {
                 currentTransitions = new List<Transition>();
                 _transitions.Add(from.GetType(), currentTransitions);
             }
-            
+
             currentTransitions.Add(new Transition(to, condition));
         }
 
@@ -81,7 +84,7 @@ namespace BrightLib.StateMachine.Runtime
             {
                 if (transition.Condition())
                 {
-                    result = transition.Target;
+                    result = GetLeafState(transition.Target);
                     return true;
                 }
             }
@@ -90,13 +93,40 @@ namespace BrightLib.StateMachine.Runtime
             {
                 if (transition.Condition())
                 {
-                    result = transition.Target;
+                    result = GetLeafState(transition.Target);
                     return true;
+                }
+            }
+
+            var state = _currentState;
+            while(state.HasParentState)
+            {
+                state = state.ParentState;
+                if (_transitions.TryGetValue(state.GetType(), out List<Transition> parentStateTransitions))
+                {
+                    foreach (var transition in parentStateTransitions)
+                    {
+                        if (transition.Condition())
+                        {
+                            result = GetLeafState(transition.Target);
+                            return true;
+                        }
+                    }
                 }
             }
 
             result = default;
             return false;
         }
+
+        private State GetLeafState(State state)
+        {
+            if (state is CompositeState compositeState)
+            {
+                return compositeState.GetLeafState();
+            }
+            return state;
+        }
     }
+
 }

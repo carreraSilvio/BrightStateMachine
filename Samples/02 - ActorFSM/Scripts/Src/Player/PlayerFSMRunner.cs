@@ -2,7 +2,7 @@
 
 namespace BrightLib.StateMachine.Samples
 {
-    public class PlayerFSMRunner : HFSMRunner<Actor>
+    public class PlayerFSMRunner : FSMRunner<Actor>
     {
         private void Start()
         {

@@ -3,20 +3,20 @@ using System.Collections.Generic;
 
 namespace BrightLib.StateMachine.Runtime
 {
-    public abstract class CompositeState : HFSMState
+    public abstract class CompositeState : State
     {
-        private HFSMState _initialState;
+        private State _initialState;
 
-        private Dictionary<Type, HFSMState> _children;
+        private Dictionary<Type, State> _children;
 
-        public HFSMState InitialState => _initialState; 
+        public State InitialState => _initialState; 
 
         public CompositeState()
         {
-            _children = new Dictionary<Type, HFSMState>();
+            _children = new Dictionary<Type, State>();
         }
 
-        public void AddChild(HFSMState state)
+        public void AddChild(State state)
         {
             if (_children.ContainsKey(state.GetType())) return;
 
@@ -24,7 +24,7 @@ namespace BrightLib.StateMachine.Runtime
             state.SetParent(this);
         }
 
-        public void AddChildAsInitialState(HFSMState state)
+        public void AddChildAsInitialState(State state)
         {
             _initialState = state;
             AddChild(state);
@@ -33,7 +33,7 @@ namespace BrightLib.StateMachine.Runtime
         /// <summary>
         /// Return the first non-composite HFSM state
         /// </summary>
-        public HFSMState GetLeafState()
+        public State GetLeafState()
         {
             if(_initialState is CompositeState compositeState)
             {

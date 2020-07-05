@@ -2,15 +2,15 @@
 
 namespace BrightLib.StateMachine.Runtime
 {
-    public class HFSMTransition
+    public class Transition
     {
-        protected readonly HFSMState _target;
+        protected readonly State _target;
         protected readonly Func<bool> _condition;
 
-        public HFSMState Target => _target;
+        public State Target => _target;
         public Func<bool> Condition => _condition;
 
-        public HFSMTransition(HFSMState target, Func<bool> func)
+        public Transition(State target, Func<bool> func)
         {
             _target = target;
             _condition = func;

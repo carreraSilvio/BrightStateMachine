@@ -1,9 +1,9 @@
 ﻿namespace BrightLib.StateMachine.Runtime
 {
     /// <summary>
-    /// Basic state for <see cref="HFSM"/>
+    /// Basic state for <see cref="FSM"/>
     /// </summary>
-    public abstract class HFSMState
+    public abstract class State
     {
         protected CompositeState _parentState;
 

@@ -11,7 +11,7 @@ namespace BrightLib.StateMachine.Samples.HFSMSample
     ///    - Child State Heated Up
     /// Every time you transition to OnState you'll actually enter the HeatingUpState
     /// </summary>
-    public class OvenHFSM : HFSM
+    public class OvenHFSM : FSM
     {
         public OvenHFSM()
         {

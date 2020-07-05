@@ -2,7 +2,7 @@
 
 namespace BrightLib.StateMachine.Samples
 {
-    public class EnemyFSM : HFSM<Actor>
+    public class EnemyFSM : FSM<Actor>
     {
         public EnemyFSM(Actor actor) : base(actor)
         {
