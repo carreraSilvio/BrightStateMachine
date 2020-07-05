@@ -7,7 +7,7 @@ namespace BrightLib.StateMachine.Runtime
     /// </summary>
     public class ObjectFSM<T0> : FSM where T0 : class
     {
-        protected T0 _targetObject;
+        private readonly T0 _targetObject;
 
         public T0 TargetObject => _targetObject;
 

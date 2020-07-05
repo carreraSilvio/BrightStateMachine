@@ -3,7 +3,7 @@
 namespace BrightLib.StateMachine.Runtime
 {
     /// <summary>
-    /// A FSM that allows you to stack states
+    /// Generic version of <see cref="PushdownFSM"/>
     /// </summary>
     public class PushdownFSM<T0> : PushdownFSM where T0 : Component
     {

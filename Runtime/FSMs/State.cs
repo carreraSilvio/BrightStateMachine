@@ -38,7 +38,7 @@
         }
 
         /// <summary>
-        /// Returns a State name up to the root HFSMState. Eg: ParentStateName.SubParentStateName.StateName
+        /// Returns a State name up to the root FSMState. Eg: ParentStateName.SubParentStateName.StateName
         /// </summary>
         public string FullName()
         {

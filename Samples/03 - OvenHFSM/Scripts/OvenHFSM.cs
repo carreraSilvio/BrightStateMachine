@@ -1,7 +1,8 @@
 ﻿using BrightLib.StateMachine.Runtime;
+using BrightLib.StateMachine.Samples.HFSMSample;
 using UnityEngine;
 
-namespace BrightLib.StateMachine.Samples.HFSMSample
+namespace BrightLib.StateMachine.Samples
 {
     /// <summary>
     /// The ovenHFSM will have two states, one of the states will have two child states

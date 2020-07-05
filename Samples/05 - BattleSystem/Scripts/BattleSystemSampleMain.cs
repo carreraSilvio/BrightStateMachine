@@ -13,7 +13,6 @@ namespace BrightLib.StateMachine.Samples
         void Start()
         {
             battleSystem = new BattleSystem();
-
         }
 
         // Update is called once per frame
