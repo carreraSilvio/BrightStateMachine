@@ -42,14 +42,18 @@ namespace BrightLib.StateMachine.Runtime
             _currentState.LateUpdate();
         }
 
-        public void ChangeToStartState() => ChangeState(_initialState);
+        public void ChangeStateToInitialState() => ChangeState(_initialState);
 
         protected virtual void ChangeState(State targetState)
         {
+            ExitCurrentState();
+            EnterState(targetState);
+        }
+
+        protected virtual void EnterState(State targetState)
+        {
             if (targetState == _currentState) return;
 
-            var previousState = _currentState;
-            _currentState?.Exit();
             _currentState = targetState;
 
             if (!_transitions.TryGetValue(_currentState.GetType(), out _currentStateTransitions))
@@ -58,8 +62,17 @@ namespace BrightLib.StateMachine.Runtime
             }
 
             _currentState.Enter();
-            if (previousState != null) OnStateExit?.Invoke(previousState);
             OnStateEnter?.Invoke(_currentState);
+        }
+
+        protected virtual void ExitCurrentState()
+        {
+            if (_currentState == null) return;
+
+            var exittedState = _currentState; 
+            _currentState = null;
+
+            if (exittedState != null) OnStateExit?.Invoke(exittedState);
         }
 
         public void AddTransition(State from, State to, Func<bool> condition)

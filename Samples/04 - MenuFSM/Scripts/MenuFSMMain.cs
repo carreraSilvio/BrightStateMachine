@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace BrightLib.StateMachine.Samples.HFSMSample
 {
-    public class OvenHFSMMain : MonoBehaviour
+    public class MenuFSMMain : MonoBehaviour
     {
         protected MenuFSM _fsm;
 

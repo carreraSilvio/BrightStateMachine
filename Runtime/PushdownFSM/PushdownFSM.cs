@@ -46,8 +46,24 @@ namespace BrightLib.StateMachine.Runtime
         private void PushState(State state)
         {
             _stack.Push(_currentState);
-            _currentState = state;
-            _currentState.Enter();
+            //_currentState = state;
+            //_currentState.Enter();
+            EnterState(state);
+
+            if (!_transitions.TryGetValue(_currentState.GetType(), out _currentStateTransitions))
+            {
+                _currentStateTransitions = _S_EMPTY_TRANSITIONS;
+            }
+
+            if (!_pushTransitions.TryGetValue(_currentState.GetType(), out _currentStatePushTransitions))
+            {
+                _currentStatePushTransitions = _S_EMPTY_TRANSITIONS;
+            }
+
+            if (!_popTransitions.TryGetValue(_currentState.GetType(), out _currentStatePopTransitions))
+            {
+                _currentStatePopTransitions = _S_EMPTY_TRANSITIONS;
+            }
         }
 
         private void PopState()
@@ -58,7 +74,7 @@ namespace BrightLib.StateMachine.Runtime
 
         protected sealed override void ChangeState(State targetState)
         {
-            while (_stack.Peek() != null)
+            while (_stack.Count > 0 && _stack.Peek() != null)
             {
                 _stack.Pop().Exit();
             }

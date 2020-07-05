@@ -18,7 +18,7 @@ namespace BrightLib.StateMachine.Samples.HFSMSample
             var offState = new OffState();
 
             var onState = new OnState();
-            var heatingUpState = new HeatingUpState();
+            var heatingUpState = new ControlsState();
             var heatedUpState = new HeatedUpState();
 
             onState.AddChildAsInitialState(heatingUpState);

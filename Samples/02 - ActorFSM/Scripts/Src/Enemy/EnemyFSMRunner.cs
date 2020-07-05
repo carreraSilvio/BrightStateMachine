@@ -7,7 +7,7 @@ namespace BrightLib.StateMachine.Samples
         private void Start()
         {
             _fsm = new EnemyFSM(_component);
-            _fsm.ChangeToStartState();
+            _fsm.ChangeStateToInitialState();
         }
 
     }
