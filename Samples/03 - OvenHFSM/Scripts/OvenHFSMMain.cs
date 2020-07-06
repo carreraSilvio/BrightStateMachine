@@ -1,7 +1,7 @@
 ﻿using BrightLib.StateMachine.Runtime;
 using UnityEngine;
 
-namespace BrightLib.StateMachine.Samples.HFSMSample
+namespace BrightLib.StateMachine.Samples
 {
     public class OvenHFSMMain : MonoBehaviour
     {

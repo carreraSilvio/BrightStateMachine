@@ -25,5 +25,7 @@ namespace BrightLib.StateMachine.Samples
 
             Actor.transform.position = pos;
         }
+
+
     }
 }

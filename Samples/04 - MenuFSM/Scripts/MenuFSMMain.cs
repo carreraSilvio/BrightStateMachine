@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-namespace BrightLib.StateMachine.Samples.HFSMSample
+namespace BrightLib.StateMachine.Samples
 {
     public class MenuFSMMain : MonoBehaviour
     {
