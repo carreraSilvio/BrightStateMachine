@@ -1,6 +1,6 @@
 ﻿namespace BrightLib.StateMachine.Samples
 {
-    public class EnemyFSM : ActorFSMBehaviour
+    public class EnemyFSM : ActorFSM
     {
         private void Start()
         {

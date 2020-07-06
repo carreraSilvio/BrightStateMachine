@@ -1,8 +1,6 @@
-﻿using BrightLib.StateMachine.Runtime;
-
-namespace BrightLib.StateMachine.Samples
+﻿namespace BrightLib.StateMachine.Samples
 {
-    public class PlayerFSM : ActorFSMBehaviour
+    public class PlayerFSM : ActorFSM
     {
 
         private void Start()

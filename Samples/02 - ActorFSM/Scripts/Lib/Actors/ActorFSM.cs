@@ -2,7 +2,7 @@
 
 namespace BrightLib.StateMachine.Samples
 {
-    public abstract class ActorFSMBehaviour : FSMBehaviour<Actor>
+    public abstract class ActorFSM : FSM<Actor>
     {
         public Actor Actor => Component;
     }

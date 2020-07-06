@@ -3,24 +3,24 @@ using UnityEngine;
 
 namespace BrightLib.StateMachine.Samples
 {
-    public class BattleSystem : FSMBehaviour<BattleSystem>
+    public class BattleSystem : FSM<BattleSystem>
     {
-        public void Start()
+        public void Awake()
         {
-            _fsm.OnStateExit += HandleStatExit;
-            _fsm.OnStateEnter += HandleStateEnter;
+            OnStateExit += HandleStatExit;
+            OnStateEnter += HandleStateEnter;
 
-            var playerTurn = _fsm.CreateState<PlayerTurnState>();
-            var waitState = _fsm.CreateState<WaitState>(); 
-            var enemyTurn = _fsm.CreateState<EnemyTurnState>();
+            var playerTurn = CreateState<PlayerTurnState>();
+            var waitState = CreateState<WaitState>(); 
+            var enemyTurn = CreateState<EnemyTurnState>();
 
-            _fsm.AddTransition(playerTurn, waitState, () => Input.GetKeyDown(KeyCode.Space));
-            _fsm.AddTransition(waitState, enemyTurn, () => Input.GetKeyDown(KeyCode.Space));
-            _fsm.AddTransition(enemyTurn, playerTurn, () => Input.GetKeyDown(KeyCode.Space));
+            AddTransition(playerTurn, waitState, () => Input.GetKeyDown(KeyCode.Space));
+            AddTransition(waitState, enemyTurn, () => Input.GetKeyDown(KeyCode.Space));
+            AddTransition(enemyTurn, playerTurn, () => Input.GetKeyDown(KeyCode.Space));
 
-            _fsm.SetInitialState(playerTurn);
+            SetInitialState(playerTurn);
 
-            _fsm.ChangeToInitialState();
+            ChangeToInitialState();
         }
 
 

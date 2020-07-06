@@ -7,8 +7,8 @@
     {
         protected CompositeState _parentState;
 
-        public bool HasParentState => _parentState != null;
         public CompositeState ParentState => _parentState;
+        public bool HasParentState => _parentState != null;
 
         public void Log(object message) => UnityEngine.Debug.Log(message);
 

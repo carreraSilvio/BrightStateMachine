@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace BrightLib.StateMachine.Runtime
 {
     /// <summary>
     /// Core FSM class
     /// </summary>
-    public abstract class FSM
+    public abstract class FSM : MonoBehaviour
     {
         protected readonly static List<Transition> _S_EMPTY_TRANSITIONS = new List<Transition>();
 
@@ -16,17 +17,10 @@ namespace BrightLib.StateMachine.Runtime
         protected State _initialState;
         protected State _currentState;
 
-        protected Dictionary<Type, List<Transition>> _transitions;
+        protected Dictionary<Type, List<Transition>> _transitions = new Dictionary<Type, List<Transition>>();
 
-        protected List<Transition> _currentStateTransitions;
-        protected List<Transition> _anyStateTransitions;
-
-        public FSM()
-        {
-            _transitions = new Dictionary<Type, List<Transition>>();
-            _currentStateTransitions = new List<Transition>();
-            _anyStateTransitions = new List<Transition>();
-        }
+        protected List<Transition> _currentStateTransitions = new List<Transition>();
+        protected List<Transition> _anyStateTransitions = new List<Transition>();
 
         public virtual void Update()
         {
