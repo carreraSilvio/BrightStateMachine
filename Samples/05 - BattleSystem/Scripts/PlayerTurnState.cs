@@ -2,7 +2,7 @@
 
 namespace BrightLib.StateMachine.Samples
 {
-    internal class PlayerTurnState : ObjectState<BattleSystem>
+    public class PlayerTurnState : BattleSystemState
     {
         public PlayerTurnState(BattleSystem component) : base(component)
         {

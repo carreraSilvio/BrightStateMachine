@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 898017636}
   - component: {fileID: 898017637}
   m_Layer: 0
-  m_Name: Main
+  m_Name: BattleSystem
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -161,9 +161,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 898017635}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d4641bd8cebef34ab1329c5e67a85c5, type: 3}
+  m_Script: {fileID: 11500000, guid: 1bcf6692c0bb4764e87eb32391c08db8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _component: {fileID: 898017637}
 --- !u!1 &1503163880
 GameObject:
   m_ObjectHideFlags: 0

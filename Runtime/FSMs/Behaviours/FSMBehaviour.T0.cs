@@ -12,6 +12,7 @@ namespace BrightLib.StateMachine.Runtime
         protected T0 _component = default;
 
         protected FSM<T0> _fsm;
+
         public T0 Component => _component;
 
         /// <summary>

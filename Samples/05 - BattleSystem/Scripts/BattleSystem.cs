@@ -3,28 +3,24 @@ using UnityEngine;
 
 namespace BrightLib.StateMachine.Samples
 {
-    public class BattleSystem
+    public class BattleSystem : FSMBehaviour<BattleSystem>
     {
-        public ObjectFSM<BattleSystem> fsm;
-
-        public BattleSystem()
+        public void Start()
         {
-            fsm = new ObjectFSM<BattleSystem>(this);
+            _fsm.OnStateExit += HandleStatExit;
+            _fsm.OnStateEnter += HandleStateEnter;
 
-            fsm.OnStateExit += HandleStatExit;
-            fsm.OnStateEnter += HandleStateEnter;
+            var playerTurn = _fsm.CreateState<PlayerTurnState>();
+            var waitState = _fsm.CreateState<WaitState>(); 
+            var enemyTurn = _fsm.CreateState<EnemyTurnState>();
 
-            var playerTurn = fsm.CreateState<PlayerTurnState>();
-            var waitState = fsm.CreateState<WaitState>(); 
-            var enemyTurn = fsm.CreateState<EnemyTurnState>();
+            _fsm.AddTransition(playerTurn, waitState, () => Input.GetKeyDown(KeyCode.Space));
+            _fsm.AddTransition(waitState, enemyTurn, () => Input.GetKeyDown(KeyCode.Space));
+            _fsm.AddTransition(enemyTurn, playerTurn, () => Input.GetKeyDown(KeyCode.Space));
 
-            fsm.AddTransition(playerTurn, waitState, () => Input.GetKeyDown(KeyCode.Space));
-            fsm.AddTransition(waitState, enemyTurn, () => Input.GetKeyDown(KeyCode.Space));
-            fsm.AddTransition(enemyTurn, playerTurn, () => Input.GetKeyDown(KeyCode.Space));
+            _fsm.SetInitialState(playerTurn);
 
-            fsm.SetInitialState(playerTurn);
-
-            fsm.ChangeToInitialState();
+            _fsm.ChangeToInitialState();
         }
 
 
@@ -37,10 +33,7 @@ namespace BrightLib.StateMachine.Samples
         {
             Debug.Log($"Enter State \t{state.FullName()}");
         }
-
-        public void Update()
-        {
-            fsm.Update();
-        }
     }
+
+    public class BattleSystemState : State<BattleSystem> { public BattleSystemState(BattleSystem component) : base(component) { } };
 }

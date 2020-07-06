@@ -2,7 +2,7 @@
 
 namespace BrightLib.StateMachine.Samples
 {
-    internal class WaitState : ObjectState<BattleSystem>
+    public class WaitState : BattleSystemState
     {
         public WaitState(BattleSystem component) : base(component)
         {
