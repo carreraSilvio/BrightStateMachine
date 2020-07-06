@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
-
-namespace BrightLib.StateMachine.Runtime
+﻿namespace BrightLib.StateMachine.Runtime
 {
     public abstract class ObjectState<T0> : State where T0 : class
     {

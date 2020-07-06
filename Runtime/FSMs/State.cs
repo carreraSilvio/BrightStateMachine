@@ -12,11 +12,6 @@
 
         public void Log(object message) => UnityEngine.Debug.Log(message);
 
-        internal void SetParent(CompositeState parentState)
-        {
-            _parentState = parentState;
-        }
-
         public virtual void Enter()
         {
 
@@ -38,7 +33,8 @@
         }
 
         /// <summary>
-        /// Returns a State name up to the root FSMState. Eg: ParentStateName.SubParentStateName.StateName
+        /// Returns a State name up to the state at the root of the FSM. 
+        /// Eg: ParentStateName.SubParentStateName.StateName
         /// </summary>
         public string FullName()
         {
@@ -51,6 +47,11 @@
             }
             fullName += GetType().Name;
             return fullName;
+        }
+
+        public void SetParent(CompositeState parentState)
+        {
+            _parentState = parentState;
         }
     }
 }

@@ -1,23 +1,20 @@
-﻿using BrightLib.StateMachine.Runtime;
-
-namespace BrightLib.StateMachine.Samples
+﻿namespace BrightLib.StateMachine.Samples
 {
-    public class EnemyFSM : FSM<Actor>
+    public class EnemyFSM : ActorFSMBehaviour
     {
-        public EnemyFSM(Actor actor) : base(actor)
+        private void Start()
         {
             var searchState = CreateState<SearchState>();
             var chaseState = CreateState<ChaseState>();
 
-            var searchModule = actor.FetchModule<SearchModule>();
-            var moveModule = actor.FetchModule<MovementModule>();
+            var searchModule = Actor.FetchModule<SearchModule>();
+            var moveModule = Actor.FetchModule<MovementModule>();
 
             AddTransition(searchState, chaseState, () => { return searchModule.HasTarget; });
             AddTransition(chaseState, searchState, () => { return !searchModule.HasTarget; });
 
-            _initialState = searchState;
+            SetInitialState(searchState);
+            ChangeToInitialState();
         }
-
-
     }
 }

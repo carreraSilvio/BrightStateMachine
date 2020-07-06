@@ -11,7 +11,7 @@ namespace BrightLib.StateMachine.Samples.FSMSample
         private void Start()
         {
             _fsm = new LightSwitchFSM();
-            _fsm.ChangeStateToInitialState();
+            _fsm.ChangeToInitialState();
             _fsm.OnStateEnter += HandleStateChange;
         }
 

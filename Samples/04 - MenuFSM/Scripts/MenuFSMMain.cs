@@ -15,7 +15,7 @@ namespace BrightLib.StateMachine.Samples
             _fsm.OnStateFocus += HandleStateFocus;
             _fsm.OnStateObscure += HandleStateObscure;
 
-            _fsm.ChangeStateToInitialState();
+            _fsm.ChangeToInitialState();
         }
 
         private void HandleStateObscure(State state)

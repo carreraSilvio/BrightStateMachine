@@ -6,7 +6,7 @@ namespace BrightLib.StateMachine.Runtime
     /// <summary>
     /// Core FSM class
     /// </summary>
-    public class FSM
+    public abstract class FSM
     {
         protected readonly static List<Transition> _S_EMPTY_TRANSITIONS = new List<Transition>();
 
@@ -42,7 +42,9 @@ namespace BrightLib.StateMachine.Runtime
             _currentState.LateUpdate();
         }
 
-        public void ChangeStateToInitialState() => ChangeState(_initialState);
+        public void SetInitialState(State initialState) => _initialState = initialState;
+
+        public void ChangeToInitialState() => ChangeState(_initialState);
 
         protected virtual void ChangeState(State targetState)
         {
@@ -73,6 +75,10 @@ namespace BrightLib.StateMachine.Runtime
             _currentState = null;
         }
 
+        
+        /// <summary>
+        /// Transition between <paramref name="from"/> and <paramref name="to"/> states if <paramref name="condition"/> is met
+        /// </summary>
         public void AddTransition(State from, State to, Func<bool> condition)
         {
             if (!_transitions.TryGetValue(from.GetType(), out List<Transition> currentTransitions))

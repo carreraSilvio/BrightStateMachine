@@ -5,16 +5,26 @@ namespace BrightLib.StateMachine.Samples
 {
     public class BattleSystem
     {
-        public BattleSystemFSM fsm;
+        public ObjectFSM<BattleSystem> fsm;
 
         public BattleSystem()
         {
-            fsm = new BattleSystemFSM(this);
+            fsm = new ObjectFSM<BattleSystem>(this);
 
             fsm.OnStateExit += HandleStatExit;
             fsm.OnStateEnter += HandleStateEnter;
 
-            fsm.ChangeStateToInitialState();
+            var playerTurn = fsm.CreateState<PlayerTurnState>();
+            var waitState = fsm.CreateState<WaitState>(); 
+            var enemyTurn = fsm.CreateState<EnemyTurnState>();
+
+            fsm.AddTransition(playerTurn, waitState, () => Input.GetKeyDown(KeyCode.Space));
+            fsm.AddTransition(waitState, enemyTurn, () => Input.GetKeyDown(KeyCode.Space));
+            fsm.AddTransition(enemyTurn, playerTurn, () => Input.GetKeyDown(KeyCode.Space));
+
+            fsm.SetInitialState(playerTurn);
+
+            fsm.ChangeToInitialState();
         }
 
 

@@ -18,7 +18,7 @@ namespace BrightLib.StateMachine.Runtime
         }
 
         /// <summary>
-        /// Creates a state of type T1 and injects the <see cref="Component"/>
+        /// Create a state of type <typeparamref name="T1"/> and inject the <see cref="Component"/>
         /// </summary>
         public T1 CreateState<T1>() where T1 : State<T0>
         {

@@ -14,6 +14,7 @@ namespace BrightLib.StateMachine.Samples
 
             var direction = (searchModule.TargetPosition - Actor.transform.position).normalized;
 
+
             Actor.FetchModule<MovementModule>().Move(direction);
         }
     }

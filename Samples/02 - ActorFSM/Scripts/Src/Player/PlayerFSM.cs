@@ -2,19 +2,21 @@
 
 namespace BrightLib.StateMachine.Samples
 {
-    public class PlayerFSM : FSM<Actor>
+    public class PlayerFSM : ActorFSMBehaviour
     {
-        public PlayerFSM(Actor component) : base(component)
+
+        private void Start()
         {
             var idleState = CreateState<IdleState>();
             var moveState = CreateState<MoveState>();
 
-            var moveModule = component.FetchModule<MovementModule>();
-            
+            var moveModule = Actor.FetchModule<MovementModule>();
+
             AddTransition(idleState, moveState, () => { return moveModule.IsMoving; });
             //AddTransition(moveState, idleState, () => { return !moveModule.IsMoving; });
 
-            _initialState = idleState;
+            SetInitialState(idleState);
+            ChangeToInitialState();
         }
 
         
