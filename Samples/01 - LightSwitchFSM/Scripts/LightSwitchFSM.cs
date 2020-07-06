@@ -5,7 +5,9 @@ namespace BrightLib.StateMachine.Samples.FSMSample
 {
     public class LightSwitchFSM : FSM
     {
-        public LightSwitchFSM()
+        public Light _light;
+
+        private void Start()
         {
             var offState = new OffState();
             var onState = new OnState();
@@ -14,6 +16,14 @@ namespace BrightLib.StateMachine.Samples.FSMSample
             AddTransition(onState, offState, () => { return Input.GetKeyDown(KeyCode.Space); });
 
             _initialState = offState;
+            ChangeToInitialState();
+
+            OnStateEnter += HandleStateChange;
+        }
+
+        private void HandleStateChange(State state)
+        {
+            _light.enabled = !_light.enabled;
         }
 
     }
