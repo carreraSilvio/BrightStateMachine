@@ -1,5 +1,4 @@
 ﻿using BrightLib.StateMachine.Runtime;
-using BrightLib.StateMachine.Samples.HFSMSample;
 using UnityEngine;
 
 namespace BrightLib.StateMachine.Samples
