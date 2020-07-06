@@ -13,12 +13,12 @@ namespace BrightLib.StateMachine.Samples
     /// </summary>
     public class OvenHFSM : FSM
     {
-        public OvenHFSM()
+        private void Start()
         {
             var offState = new OffState();
 
             var onState = new OnState();
-            var heatingUpState = new ControlsState();
+            var heatingUpState = new HeatingUpState();
             var heatedUpState = new HeatedUpState();
 
             onState.AddChildAsInitialState(heatingUpState);
@@ -30,6 +30,20 @@ namespace BrightLib.StateMachine.Samples
 
             _initialState = offState;
 
+      
+            ChangeToInitialState();
+            OnStateExit += HandleStatExit;
+            OnStateEnter += HandleStateEnter;
+        }
+
+        private void HandleStatExit(State state)
+        {
+            Debug.Log($"Exit State \t{state.FullName()}");
+        }
+
+        private void HandleStateEnter(State state)
+        {
+            Debug.Log($"Enter State \t{state.FullName()}");
         }
 
     }

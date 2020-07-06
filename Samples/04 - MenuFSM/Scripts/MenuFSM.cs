@@ -13,7 +13,8 @@ namespace BrightLib.StateMachine.Samples
     /// </summary>
     public class MenuFSM : PushdownFSM
     {
-        public MenuFSM()
+
+        private void Start()
         {
             var homeState = new HomeState();
 
@@ -32,6 +33,34 @@ namespace BrightLib.StateMachine.Samples
 
             _initialState = homeState;
 
+        
+            
+            OnStateExit += HandleStatExit;
+            OnStateEnter += HandleStateEnter;
+            OnStateFocus += HandleStateFocus;
+            OnStateObscure += HandleStateObscure;
+
+            ChangeToInitialState();
+        }
+
+        private void HandleStateObscure(State state)
+        {
+            Debug.Log($"Obscure State \t{state.FullName()}");
+        }
+
+        private void HandleStateFocus(State state)
+        {
+            Debug.Log($"Focus State \t{state.FullName()}");
+        }
+
+        private void HandleStatExit(State state)
+        {
+            Debug.Log($"Exit State \t{state.FullName()}");
+        }
+
+        private void HandleStateEnter(State state)
+        {
+            Debug.Log($"Enter State \t{state.FullName()}");
         }
 
     }

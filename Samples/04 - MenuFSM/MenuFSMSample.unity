@@ -130,9 +130,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 898017636}
-  - component: {fileID: 898017637}
+  - component: {fileID: 898017638}
   m_Layer: 0
-  m_Name: Main
+  m_Name: MenuFSM
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,7 +152,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &898017637
+--- !u!114 &898017638
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -161,7 +161,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 898017635}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0efb531278f20c4c883c42f60df7a2c, type: 3}
+  m_Script: {fileID: 11500000, guid: aea4823485033c146905f779e382ff8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1503163880
