@@ -24,6 +24,9 @@ namespace BrightLib.StateMachine.Runtime
 
         protected Dictionary<Type, State> _states = new Dictionary<Type, State>();
 
+        private float _timeEnteredState;
+        public float TimeEnteredState => _timeEnteredState;
+
         public virtual void Update()
         {
             if (CheckTransitions(out State state))
@@ -59,6 +62,7 @@ namespace BrightLib.StateMachine.Runtime
                 _currentStateTransitions = _S_EMPTY_TRANSITIONS;
             }
 
+            _timeEnteredState = Time.time;
             _currentState.Enter();
             OnStateEnter?.Invoke(_currentState);
         }
