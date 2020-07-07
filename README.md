@@ -1,29 +1,22 @@
-# README #
+#Bright FSMs
 
-This README would normally document whatever steps are necessary to get your application up and running.
+##FSM
+###Features
+* States: Have separate states to ease single responsability
+* Transitions: Change from one state to the other
+* OnEnter/OnExit: Run logic when entering and exiting a state
+* Composite States: 
+** States that can act as parents to other states
+** Share their transitions with it's children states
+** Allows nesting of multiple levels
 
-### What is this repository for? ###
+##Pushdown FSM
+###Features
+* All previous features plus the one bellow
+* History: Push states on top of another allowing you to go back to previous state
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+##LayeredFSM (tbd)
+###Features
+* Layers: Each layer consists of an independent FSM
+* Parallelism: FSMs will run in parallel
+* Broadcasting: FSMs can fire events that are broadcasted inside the LayeredFSM.

@@ -1,0 +1,41 @@
+{
+  "name": "com.brightlib.fsms",
+  "version": "1.0.0",
+  "displayName": "Bright FSM",
+  "description": "FSM to control flow, menus and actors ingame.",
+  "unity": "2018.2",
+  "unityRelease": "15f1",
+  "author": 
+  {
+    "name": "Silvio Carréra",
+    "url": "https://github.com/carreraSilvio/BrightStateMachine"
+  },
+  "samples": 
+  [
+    {
+        "displayName": "01 - LightSwitchFSM",
+        "description": "Simple light switch",
+        "path": "Samples~/01 - LightSwitchFSM"
+    },
+    {
+        "displayName": "02 - OvenHFSM",
+        "description": "Oven HFSM with composite state transitions.",
+        "path": "Samples~/02 - OvenHFSM"
+    },
+    {
+        "displayName": "03 - MenuFSM",
+        "description": "Menu with a pushdown FSM that allows to keep a history of states.",
+        "path": "Samples~/03 - MenuFSM"
+    },
+    {
+        "displayName": "04 - ActorFSM",
+        "description": "Player and enemy being controlled by FSM and sharing behaviors.",
+        "path": "Samples~/04 - ActorFSM"
+    },
+    {
+        "displayName": "05 - BattleSystem",
+        "description": "Simple battle sytstem with states .",
+        "path": "Samples~/05 - BattleSystem"
+    }
+  ]
+}

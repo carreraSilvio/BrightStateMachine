@@ -13,7 +13,6 @@ namespace BrightLib.StateMachine.Samples
     /// </summary>
     public class MenuFSM : PushdownFSM
     {
-
         private void Start()
         {
             var homeState = new HomeState();
@@ -32,8 +31,6 @@ namespace BrightLib.StateMachine.Samples
             AddReturnTransition(audioOptionsState, () => { return Input.GetKeyDown(KeyCode.Escape); });
 
             _initialState = homeState;
-
-        
             
             OnStateExit += HandleStatExit;
             OnStateEnter += HandleStateEnter;

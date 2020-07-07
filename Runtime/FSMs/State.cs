@@ -1,10 +1,14 @@
-﻿namespace BrightLib.StateMachine.Runtime
+﻿using System.Collections.Generic;
+
+namespace BrightLib.StateMachine.Runtime
 {
     /// <summary>
     /// Basic state for <see cref="FSM"/>
     /// </summary>
     public abstract class State
     {
+        protected List<Transition> _transitions = new List<Transition>();
+
         protected CompositeState _parentState;
 
         public CompositeState ParentState => _parentState;
@@ -33,7 +37,7 @@
         }
 
         /// <summary>
-        /// Returns a State name up to the state at the root of the FSM. 
+        /// Return state name up to the the root of the FSM. 
         /// Eg: ParentStateName.SubParentStateName.StateName
         /// </summary>
         public string FullName()

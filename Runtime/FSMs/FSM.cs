@@ -22,6 +22,8 @@ namespace BrightLib.StateMachine.Runtime
         protected List<Transition> _currentStateTransitions = new List<Transition>();
         protected List<Transition> _anyStateTransitions = new List<Transition>();
 
+        protected Dictionary<Type, State> _states = new Dictionary<Type, State>();
+
         public virtual void Update()
         {
             if (CheckTransitions(out State state))
@@ -69,7 +71,14 @@ namespace BrightLib.StateMachine.Runtime
             _currentState = null;
         }
 
-        
+        public void AddState(State state)
+        {
+            if(!_states.ContainsKey(state.GetType()))
+            {
+                _states.Add(state.GetType(), state);
+            }
+        }
+
         /// <summary>
         /// Transition between <paramref name="from"/> and <paramref name="to"/> states if <paramref name="condition"/> is met
         /// </summary>
