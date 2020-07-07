@@ -1,4 +1,4 @@
-#Bright FSMs
+# Bright FSMs
 
 ##FSM
 ###Features
