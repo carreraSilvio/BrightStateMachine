@@ -67,6 +67,7 @@ namespace BrightLib.StateMachine.Runtime
         {
             if (_currentState == null) return;
 
+            _currentState.Exit();
             OnStateExit?.Invoke(_currentState);
             _currentState = null;
         }
