@@ -6,9 +6,9 @@
 * Transitions: Change from one state to the other
 * OnEnter/OnExit: Run logic when entering and exiting a state
 * Composite States: 
-** States that can act as parents to other states
-** Share their transitions with it's children states
-** Allows nesting of multiple levels
+	* States that can act as parents to other states
+	* Share their transitions with it's children states
+	* Allows nesting of multiple levels
 
 ## Pushdown FSM
 ### Features
