@@ -21,5 +21,13 @@ namespace BrightLib.StateMachine.Runtime
             return (T1) System.Activator.CreateInstance(typeof(T1), new object[] { _component });
         }
 
+        /// <summary>
+        /// Create a state of type <typeparamref name="T1"/> 
+        /// </summary>
+        public T1 CreateCompositeState<T1>() where T1 : CompositeState
+        {
+            return (T1)System.Activator.CreateInstance(typeof(T1));
+        }
+
     }
 }

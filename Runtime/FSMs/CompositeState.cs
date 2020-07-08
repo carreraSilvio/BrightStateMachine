@@ -3,11 +3,14 @@ using System.Collections.Generic;
 
 namespace BrightLib.StateMachine.Runtime
 {
+    /// <summary>
+    /// State that acts as parent to other states
+    /// </summary>
     public abstract class CompositeState : State
     {
         private State _initialState;
 
-        private Dictionary<Type, State> _children;
+        private readonly Dictionary<Type, State> _children;
 
         public State InitialState => _initialState; 
 
@@ -16,6 +19,9 @@ namespace BrightLib.StateMachine.Runtime
             _children = new Dictionary<Type, State>();
         }
 
+        /// <summary>
+        /// Add a state as child so it has access to the transitions set to the composite state
+        /// </summary>
         public void AddChild(State state)
         {
             if (_children.ContainsKey(state.GetType())) return;
@@ -45,21 +51,21 @@ namespace BrightLib.StateMachine.Runtime
 
         public override void Enter()
         {
-            return;
+           //NA
         }
 
         public override void Update()
         {
-            return;
+            //NA
         }
 
         public override void LateUpdate()
         {
-            return;
+            //NA
         }
         public override void Exit()
         {
-            return;
+            //NA;
         }
     }
 }
