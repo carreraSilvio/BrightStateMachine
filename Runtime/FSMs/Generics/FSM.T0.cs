@@ -7,11 +7,11 @@ namespace BrightLib.StateMachine.Runtime
     /// </summary>
     public abstract class FSM<T0> : FSM where T0 : Component
     {
+        //TODO: Rename to target
         [SerializeField]
         protected T0 _component = default;
 
         public T0 Component => _component;
-        public GameObject GameObject => _component.gameObject;
 
         /// <summary>
         /// Create a state of type <typeparamref name="T1"/> and inject the <see cref="Component"/>
