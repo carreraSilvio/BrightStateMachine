@@ -41,6 +41,11 @@ namespace BrightLib.StateMachine.Runtime
             _currentState.LateUpdate();
         }
 
+        public void FixedUpdate()
+        {
+            _currentState.FixedUpdate();
+        }
+
         public void SetInitialState(State initialState) => _initialState = initialState;
 
         public void ChangeToInitialState() => ChangeState(_initialState);
