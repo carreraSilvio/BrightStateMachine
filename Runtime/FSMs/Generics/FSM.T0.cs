@@ -24,9 +24,25 @@ namespace BrightLib.StateMachine.Runtime
         /// <summary>
         /// Create a Composite State of type <typeparamref name="T1"/> 
         /// </summary>
-        public T1 CreateCompositeState<T1>() where T1 : CompositeState
+        public T1 CreateCompositeState<T1>(string displayName = "") where T1 : CompositeState
         {
-            return (T1)System.Activator.CreateInstance(typeof(T1));
+            T1 compositeState = (T1)System.Activator.CreateInstance(typeof(T1));
+            compositeState.DisplayName = string.IsNullOrEmpty(displayName) ? compositeState.GetType().Name : displayName;
+            return compositeState;
+        }
+
+        protected override void EnterState(State targetState)
+        {
+            if (targetState == _currentState) return;
+            targetState.OnEnterInvoke();
+            base.EnterState(targetState);
+        }
+
+        protected override void ExitCurrentState()
+        {
+            if (_currentState == null) return;
+            _currentState.OnExitInvoke();
+            base.ExitCurrentState();
         }
 
     }

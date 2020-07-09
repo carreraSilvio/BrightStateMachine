@@ -17,12 +17,10 @@ namespace BrightLib.StateMachine.Runtime
         protected State _initialState;
         protected State _currentState;
 
-        protected Dictionary<Type, List<Transition>> _transitions = new Dictionary<Type, List<Transition>>();
+        protected Dictionary<int, List<Transition>> _transitions = new Dictionary<int, List<Transition>>();
 
         protected List<Transition> _currentStateTransitions = new List<Transition>();
         protected List<Transition> _anyStateTransitions = new List<Transition>();
-
-        protected Dictionary<Type, State> _states = new Dictionary<Type, State>();
 
         private float _timeEnteredState;
         public float TimeEnteredState => _timeEnteredState;
@@ -62,7 +60,7 @@ namespace BrightLib.StateMachine.Runtime
 
             _currentState = targetState;
 
-            if (!_transitions.TryGetValue(_currentState.GetType(), out _currentStateTransitions))
+            if (!_transitions.TryGetValue(_currentState.Id, out _currentStateTransitions))
             {
                 _currentStateTransitions = _S_EMPTY_TRANSITIONS;
             }
@@ -86,13 +84,10 @@ namespace BrightLib.StateMachine.Runtime
         /// </summary>
         public void AddTransition(State from, State to, Func<bool> condition)
         {
-            //Debug.Log($"from state {from}");
-            //Debug.Log($"to state {to}");
-
-            if (!_transitions.TryGetValue(from.GetType(), out List<Transition> currentTransitions))
+            if (!_transitions.TryGetValue(from.Id, out List<Transition> currentTransitions))
             {
                 currentTransitions = new List<Transition>();
-                _transitions.Add(from.GetType(), currentTransitions);
+                _transitions.Add(from.Id, currentTransitions);
             }
 
             currentTransitions.Add(new Transition(to, condition));
@@ -127,7 +122,7 @@ namespace BrightLib.StateMachine.Runtime
             while(state.HasParentState)
             {
                 state = state.ParentState;
-                if (_transitions.TryGetValue(state.GetType(), out List<Transition> parentStateTransitions))
+                if (_transitions.TryGetValue(state.Id, out List<Transition> parentStateTransitions))
                 {
                     foreach (var transition in parentStateTransitions)
                     {

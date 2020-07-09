@@ -1,11 +1,7 @@
-﻿namespace BrightLib.StateMachine.Runtime
-{
-    //public sealed class UniqueIdGenerator
-    //{
-    //    private int _uniqueId;
-    //    public int GetUniqueId() => _uniqueId++;
-    //}
+﻿using System;
 
+namespace BrightLib.StateMachine.Runtime
+{
     /// <summary>
     /// Basic state for <see cref="FSM"/>
     /// </summary>
@@ -25,6 +21,9 @@
         /// Optional friendly name
         /// </summary>
         public string DisplayName { get; set; }
+
+        public event Action<State> OnEnter;
+        public event Action<State> OnExit;
 
         /// <summary>
         /// Return state name up to the the root of the FSM. 
@@ -79,5 +78,8 @@
         {
             return $"FullName\t {FullName()}\t Id\t {_id}";
         }
+
+        internal virtual void OnEnterInvoke() => OnEnter?.Invoke(this);
+        internal virtual void OnExitInvoke() => OnExit?.Invoke(this);
     }
 }
