@@ -11,15 +11,15 @@
     /// </summary>
     public abstract class State
     {
-        //private static readonly UniqueIdGenerator _S_UNIQUE_ID_GENERATOR = new UniqueIdGenerator();
+        private static int _S_UNIQUE_INSTANCE_ID;
 
-        //private readonly int _id = _S_UNIQUE_ID_GENERATOR.GetUniqueId();
+        private readonly int _id = _S_UNIQUE_INSTANCE_ID++;
 
         private CompositeState _parentState;
 
         public CompositeState ParentState => _parentState;
         public bool HasParentState => _parentState != null;
-        //public int Id => _id;
+        public int Id => _id;
 
         /// <summary>
         /// Optional friendly name
@@ -74,5 +74,10 @@
         }
 
         public void Log(object message) => UnityEngine.Debug.Log(message);
+
+        public override string ToString()
+        {
+            return $"FullName\t {FullName()}\t Id\t {_id}";
+        }
     }
 }

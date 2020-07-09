@@ -94,6 +94,9 @@ namespace BrightLib.StateMachine.Runtime
         /// </summary>
         public void AddTransition(State from, State to, Func<bool> condition)
         {
+            //Debug.Log($"from state {from}");
+            //Debug.Log($"to state {to}");
+
             if (!_transitions.TryGetValue(from.GetType(), out List<Transition> currentTransitions))
             {
                 currentTransitions = new List<Transition>();

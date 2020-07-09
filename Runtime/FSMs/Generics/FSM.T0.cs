@@ -22,7 +22,7 @@ namespace BrightLib.StateMachine.Runtime
         }
 
         /// <summary>
-        /// Create a state of type <typeparamref name="T1"/> 
+        /// Create a Composite State of type <typeparamref name="T1"/> 
         /// </summary>
         public T1 CreateCompositeState<T1>() where T1 : CompositeState
         {
