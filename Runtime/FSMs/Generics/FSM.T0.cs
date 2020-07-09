@@ -26,7 +26,7 @@ namespace BrightLib.StateMachine.Runtime
         /// </summary>
         public T1 CreateCompositeState<T1>(string displayName = "") where T1 : CompositeState
         {
-            T1 compositeState = (T1)System.Activator.CreateInstance(typeof(T1));
+            var compositeState = (T1)System.Activator.CreateInstance(typeof(T1));
             compositeState.DisplayName = string.IsNullOrEmpty(displayName) ? compositeState.GetType().Name : displayName;
             return compositeState;
         }

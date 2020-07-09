@@ -6,7 +6,7 @@ namespace BrightLib.StateMachine.Runtime
     /// <summary>
     /// State that acts as parent to other states
     /// </summary>
-    public abstract class CompositeState : State
+    public class CompositeState : State
     {
         private State _initialState;
 
@@ -15,6 +15,11 @@ namespace BrightLib.StateMachine.Runtime
         public State InitialState => _initialState; 
 
         public CompositeState()
+        {
+            _children = new Dictionary<Type, State>();
+        }
+
+        public CompositeState(string displayName) : base(displayName)
         {
             _children = new Dictionary<Type, State>();
         }

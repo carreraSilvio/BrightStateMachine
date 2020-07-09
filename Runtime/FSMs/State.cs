@@ -25,6 +25,16 @@ namespace BrightLib.StateMachine.Runtime
         public event Action<State> OnEnter;
         public event Action<State> OnExit;
 
+        public State()
+        {
+            DisplayName = GetType().Name;
+        }
+
+        public State(string displayName)
+        {
+            DisplayName = displayName;
+        }
+
         /// <summary>
         /// Return state name up to the the root of the FSM. 
         /// Eg: ParentStateName.SubParentStateName.StateName
@@ -35,10 +45,10 @@ namespace BrightLib.StateMachine.Runtime
             var state = this;
             while (state.HasParentState)
             {
-                fullName += state.ParentState.GetType().Name + ".";
+                fullName += state.ParentState.DisplayName + ".";
                 state = state.ParentState;
             }
-            fullName += GetType().Name;
+            fullName += DisplayName;
             return fullName;
         }
 
@@ -76,7 +86,7 @@ namespace BrightLib.StateMachine.Runtime
 
         public override string ToString()
         {
-            return $"FullName\t {FullName()}\t Id\t {_id}";
+            return $"Id {_id}\t FullName {FullName()}";
         }
 
         internal virtual void OnEnterInvoke() => OnEnter?.Invoke(this);
