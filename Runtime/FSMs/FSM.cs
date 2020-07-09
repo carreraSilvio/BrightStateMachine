@@ -66,6 +66,7 @@ namespace BrightLib.StateMachine.Runtime
             }
 
             _timeEnteredState = Time.time;
+            _currentState.OnEnterInvoke();
             _currentState.Enter();
             OnStateEnter?.Invoke(_currentState);
         }
@@ -74,6 +75,7 @@ namespace BrightLib.StateMachine.Runtime
         {
             if (_currentState == null) return;
 
+            _currentState.OnExitInvoke();
             _currentState.Exit();
             OnStateExit?.Invoke(_currentState);
             _currentState = null;
