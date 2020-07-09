@@ -81,14 +81,6 @@ namespace BrightLib.StateMachine.Runtime
             _currentState = null;
         }
 
-        public void AddState(State state)
-        {
-            if(!_states.ContainsKey(state.GetType()))
-            {
-                _states.Add(state.GetType(), state);
-            }
-        }
-
         /// <summary>
         /// Transition between <paramref name="from"/> and <paramref name="to"/> states if <paramref name="condition"/> is met
         /// </summary>
