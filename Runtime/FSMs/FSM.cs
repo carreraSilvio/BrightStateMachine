@@ -23,7 +23,16 @@ namespace BrightLib.StateMachine.Runtime
         protected List<Transition> _anyStateTransitions = new List<Transition>();
 
         private float _timeEnteredState;
+
+        /// <summary>
+        /// Time entered current state
+        /// </summary>
         public float TimeEnteredState => _timeEnteredState;
+
+        /// <summary>
+        /// Current state
+        /// </summary>
+        public State CurrentState => _currentState; 
 
         public virtual void Update()
         {

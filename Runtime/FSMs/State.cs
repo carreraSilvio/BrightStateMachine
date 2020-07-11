@@ -5,7 +5,7 @@ namespace BrightLib.StateMachine.Runtime
     /// <summary>
     /// Basic state for <see cref="FSM"/>
     /// </summary>
-    public abstract class State
+    public class State
     {
         private static int _S_UNIQUE_INSTANCE_ID;
 
