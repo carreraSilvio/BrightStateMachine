@@ -13,7 +13,12 @@ namespace BrightLib.StateMachine.Runtime
         public T0 Component => _component;
         public GameObject GameObject => _component.gameObject;
 
-        public State(T0 component)
+        public State(T0 component) : base()
+        {
+            _component = component;
+        }
+
+        public State(T0 component, string displayName) : base(displayName)
         {
             _component = component;
         }

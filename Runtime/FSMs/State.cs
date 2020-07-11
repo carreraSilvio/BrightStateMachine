@@ -13,26 +13,24 @@ namespace BrightLib.StateMachine.Runtime
 
         private CompositeState _parentState;
 
+        protected string _displayName;
+
         public CompositeState ParentState => _parentState;
         public bool HasParentState => _parentState != null;
         public int Id => _id;
-
-        /// <summary>
-        /// Optional friendly name
-        /// </summary>
-        public string DisplayName { get; set; }
+        public string DisplayName => _displayName;
 
         public event Action<State> OnEnter;
         public event Action<State> OnExit;
 
         public State()
         {
-            DisplayName = GetType().Name;
+            _displayName = GetType().Name;
         }
 
         public State(string displayName)
         {
-            DisplayName = displayName;
+            _displayName = displayName;
         }
 
         /// <summary>
