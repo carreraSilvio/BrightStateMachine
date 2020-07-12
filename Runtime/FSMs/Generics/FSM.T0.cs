@@ -21,19 +21,5 @@ namespace BrightLib.StateMachine.Runtime
             return (T1) System.Activator.CreateInstance(typeof(T1), new object[] { _component });
         }
 
-        protected override void EnterState(State targetState)
-        {
-            if (targetState == _currentState) return;
-            targetState.OnEnterInvoke();
-            base.EnterState(targetState);
-        }
-
-        protected override void ExitCurrentState()
-        {
-            if (_currentState == null) return;
-            _currentState.OnExitInvoke();
-            base.ExitCurrentState();
-        }
-
     }
 }
