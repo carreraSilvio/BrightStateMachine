@@ -3,7 +3,7 @@
 namespace BrightLib.StateMachine.Runtime
 {
     /// <summary>
-    /// Transition where you quit the current state and return to previous on the stack
+    /// Quit the current state and return to previous on the stack
     /// </summary>
     internal class QuitTransition : Transition
     {
@@ -11,6 +11,4 @@ namespace BrightLib.StateMachine.Runtime
         {
         }
     }
-
-
 }

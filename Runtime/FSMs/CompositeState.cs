@@ -12,7 +12,7 @@ namespace BrightLib.StateMachine.Runtime
 
         private readonly Dictionary<Type, State> _children;
 
-        public State InitialState => _initialState; 
+        public State InitialState => _initialState;
 
         public CompositeState()
         {
@@ -46,7 +46,7 @@ namespace BrightLib.StateMachine.Runtime
         /// </summary>
         public State GetLeafState()
         {
-            if(_initialState is CompositeState compositeState)
+            if (_initialState is CompositeState compositeState)
             {
                 compositeState.GetLeafState();
             }
@@ -56,7 +56,7 @@ namespace BrightLib.StateMachine.Runtime
 
         public override void Enter()
         {
-           //NA
+            //NA
         }
 
         public override void Update()

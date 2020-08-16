@@ -18,7 +18,7 @@ namespace BrightLib.StateMachine.Runtime
         /// </summary>
         public T1 CreateState<T1>() where T1 : State<T0>
         {
-            return (T1) System.Activator.CreateInstance(typeof(T1), new object[] { _component });
+            return (T1)System.Activator.CreateInstance(typeof(T1), new object[] { _component });
         }
 
     }

@@ -18,8 +18,8 @@ namespace BrightLib.StateMachine.Runtime
         /// </summary>
         public event Action<State> OnStateObscure;
 
-        protected Dictionary<Type, List<Transition>> _overlapTransitions;
-        protected Dictionary<Type, List<Transition>> _quitTransitions;
+        protected Dictionary<int, List<Transition>> _overlapTransitions;
+        protected Dictionary<int, List<Transition>> _quitTransitions;
 
         protected StateInfo _currentStateInfo;
 
@@ -28,8 +28,8 @@ namespace BrightLib.StateMachine.Runtime
         public PushdownFSM()
         {
             _stack = new Stack<State>();
-            _overlapTransitions = new Dictionary<Type, List<Transition>>();
-            _quitTransitions = new Dictionary<Type, List<Transition>>();
+            _overlapTransitions = new Dictionary<int, List<Transition>>();
+            _quitTransitions = new Dictionary<int, List<Transition>>();
 
             _currentStateInfo.overlapTransitions = new List<Transition>();
             _currentStateInfo.quitTransitions = new List<Transition>();
@@ -41,9 +41,9 @@ namespace BrightLib.StateMachine.Runtime
             {
                 ChangeState(state);
             }
-            else if (CheckOverlapTransitions(out State pushState))
+            else if (CheckOverlapTransitions(out State targetState))
             {
-                OverlapState(pushState);
+                OverlapState(targetState);
             }
             else if (CheckQuitTransitions())
             {
@@ -53,46 +53,46 @@ namespace BrightLib.StateMachine.Runtime
         }
 
         /// <summary>
-        /// Will enter the <paramref name="to"/> state and save the <paramref name="from"/> state in a stack you can return to
+        /// Will enter the <paramref name="toState"/> state and save the <paramref name="fromState"/> state on the stack
         /// </summary>
-        public void AddOverlapTransition(State from, State to, Func<bool> condition)
+        public void AddOverlapTransition(State fromState, State toState, Func<bool> condition)
         {
-            if (!_overlapTransitions.TryGetValue(from.GetType(), out List<Transition> currentPushTransitions))
+            if (!_overlapTransitions.TryGetValue(fromState.Id, out List<Transition> currentOverlapTransition))
             {
-                currentPushTransitions = new List<Transition>();
-                _overlapTransitions.Add(from.GetType(), currentPushTransitions);
+                currentOverlapTransition = new List<Transition>();
+                _overlapTransitions.Add(fromState.Id, currentOverlapTransition);
             }
 
-            currentPushTransitions.Add(new Transition(to, condition));
+            currentOverlapTransition.Add(new Transition(toState, condition));
         }
 
         /// <summary>
-        /// Will exit the <paramref name="from"/> state and return the previous one on the stack
+        /// Will exit the <paramref name="fromState"/> state and return the previous one on the stack
         /// </summary>
-        public void AddReturnTransition(State from, Func<bool> condition)
+        public void AddQuitTransition(State fromState, Func<bool> condition)
         {
-            if (!_quitTransitions.TryGetValue(from.GetType(), out List<Transition> currentPushTransitions))
+            if (!_quitTransitions.TryGetValue(fromState.Id, out List<Transition> currentQuitTransitions))
             {
-                currentPushTransitions = new List<Transition>();
-                _quitTransitions.Add(from.GetType(), currentPushTransitions);
+                currentQuitTransitions = new List<Transition>();
+                _quitTransitions.Add(fromState.Id, currentQuitTransitions);
             }
 
-            currentPushTransitions.Add(new QuitTransition(condition));
+            currentQuitTransitions.Add(new QuitTransition(condition));
         }
 
         /// <summary>
-        /// Put current state on the stack and enters state <paramref name="state"/>
+        /// Put current state on the stack and enter state <paramref name="targetState"/>
         /// </summary>
-        private void OverlapState(State state)
+        private void OverlapState(State targetState)
         {
             _stack.Push(_currentState);
             OnStateObscure?.Invoke(_currentState);
-            EnterState(state);
-            UpdateCurrentStateInfo(state);
+            EnterState(targetState);
+            UpdateCurrentStateInfo(targetState);
         }
 
         /// <summary>
-        /// Exit current state and returns to previous one on the stack
+        /// Exit current state and return to previous one on the stack
         /// </summary>
         private void QuitCurrentState()
         {
@@ -146,17 +146,16 @@ namespace BrightLib.StateMachine.Runtime
 
         private void UpdateCurrentStateInfo(State state)
         {
-            if (!_overlapTransitions.TryGetValue(state.GetType(), out _currentStateInfo.overlapTransitions))
+            if (!_overlapTransitions.TryGetValue(state.Id, out _currentStateInfo.overlapTransitions))
             {
                 _currentStateInfo.overlapTransitions = _S_EMPTY_TRANSITIONS;
             }
 
-            if (!_quitTransitions.TryGetValue(state.GetType(), out _currentStateInfo.quitTransitions))
+            if (!_quitTransitions.TryGetValue(state.Id, out _currentStateInfo.quitTransitions))
             {
                 _currentStateInfo.quitTransitions = _S_EMPTY_TRANSITIONS;
             }
         }
-
 
     }
 }

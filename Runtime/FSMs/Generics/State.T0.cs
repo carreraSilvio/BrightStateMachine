@@ -9,7 +9,7 @@ namespace BrightLib.StateMachine.Runtime
         public new event Action<T0> OnExit;
 
         private readonly T0 _component;
-        
+
         public T0 Component => _component;
         public GameObject GameObject => _component.gameObject;
 

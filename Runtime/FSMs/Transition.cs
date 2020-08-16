@@ -16,6 +16,4 @@ namespace BrightLib.StateMachine.Runtime
             _condition = func;
         }
     }
-
-
 }

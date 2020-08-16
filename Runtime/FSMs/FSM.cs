@@ -27,12 +27,17 @@ namespace BrightLib.StateMachine.Runtime
         /// <summary>
         /// Time entered current state
         /// </summary>
-        public float TimeEnteredState => _timeEnteredState;
+        public float TimeEnteredCurrentState => _timeEnteredState;
+
+        /// <summary>
+        /// Elapsed time in current state
+        /// </summary>
+        public float ElapseTimeInCurrentState => Time.time - _timeEnteredState;
 
         /// <summary>
         /// Current state
         /// </summary>
-        public State CurrentState => _currentState; 
+        public State CurrentState => _currentState;
 
         public virtual void Update()
         {
@@ -130,7 +135,7 @@ namespace BrightLib.StateMachine.Runtime
             }
 
             var state = _currentState;
-            while(state.HasParentState)
+            while (state.HasParentState)
             {
                 state = state.ParentState;
                 if (_transitions.TryGetValue(state.Id, out List<Transition> parentStateTransitions))

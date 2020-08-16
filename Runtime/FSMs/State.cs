@@ -82,10 +82,7 @@ namespace BrightLib.StateMachine.Runtime
 
         public void Log(object message) => UnityEngine.Debug.Log(message);
 
-        public override string ToString()
-        {
-            return $"Id {_id}\t FullName {FullName()}";
-        }
+        public override string ToString() => $"Id {_id}\t FullName {FullName()}";
 
         internal virtual void OnEnterInvoke() => OnEnter?.Invoke(this);
         internal virtual void OnExitInvoke() => OnExit?.Invoke(this);
