@@ -58,9 +58,15 @@ namespace BrightLib.StateMachine.Runtime
             _currentState.FixedUpdate();
         }
 
-        public void SetInitialState(State initialState) => _initialState = initialState;
+        public void SetInitialState(State initialState)
+        {
+            _initialState = initialState;
+        }
 
-        public void ChangeToInitialState() => ChangeState(_initialState);
+        public void ChangeToInitialState()
+        {
+            ChangeState(_initialState);
+        }
 
         protected virtual void ChangeState(State targetState)
         {
