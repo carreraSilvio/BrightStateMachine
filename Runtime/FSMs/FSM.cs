@@ -122,24 +122,7 @@ namespace BrightLib.StateMachine.Runtime
 
         protected bool CheckTransitions(out State result)
         {
-            foreach (var transition in _anyStateTransitions)
-            {
-                if (transition.Condition())
-                {
-                    result = GetLeafState(transition.Target);
-                    return true;
-                }
-            }
-
-            foreach (var transition in _currentStateTransitions)
-            {
-                if (transition.Condition())
-                {
-                    result = GetLeafState(transition.Target);
-                    return true;
-                }
-            }
-
+            //Check parent state transition
             var state = _currentState;
             while (state.HasParentState)
             {
@@ -154,6 +137,26 @@ namespace BrightLib.StateMachine.Runtime
                             return true;
                         }
                     }
+                }
+            }
+
+            //Check AnyState Transition
+            foreach (var transition in _anyStateTransitions)
+            {
+                if (transition.Condition())
+                {
+                    result = GetLeafState(transition.Target);
+                    return true;
+                }
+            }
+
+            //Check current state transition
+            foreach (var transition in _currentStateTransitions)
+            {
+                if (transition.Condition())
+                {
+                    result = GetLeafState(transition.Target);
+                    return true;
                 }
             }
 
