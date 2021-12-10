@@ -7,30 +7,26 @@ namespace BrightLib.StateMachine.Runtime
     /// </summary>
     public class State
     {
-        private static int _S_UNIQUE_INSTANCE_ID;
+        private static int UNIQUE_INSTANCE_ID;
 
-        private readonly int _id = _S_UNIQUE_INSTANCE_ID++;
+        private readonly int _id = UNIQUE_INSTANCE_ID++;
 
-        private CompositeState _parentState;
-
-        protected string _displayName;
-
-        public CompositeState ParentState => _parentState;
-        public bool HasParentState => _parentState != null;
+        public CompositeState ParentState { get; private set; }
+        public bool HasParentState => ParentState != null;
         public int Id => _id;
-        public string DisplayName => _displayName;
+        public string DisplayName { get; set; }
 
         public event Action<State> OnEnter;
         public event Action<State> OnExit;
 
         public State()
         {
-            _displayName = GetType().Name;
+            DisplayName = GetType().Name;
         }
 
         public State(string displayName)
         {
-            _displayName = displayName;
+            DisplayName = displayName;
         }
 
         /// <summary>
@@ -52,7 +48,7 @@ namespace BrightLib.StateMachine.Runtime
 
         internal void SetParent(CompositeState parentState)
         {
-            _parentState = parentState;
+            ParentState = parentState;
         }
 
         public virtual void Enter()
