@@ -7,7 +7,6 @@ namespace BrightLib.StateMachine.Runtime
     /// </summary>
     public abstract class FSM<T0> : FSM where T0 : Component
     {
-        //TODO: Rename to target
         [SerializeField]
         protected T0 _component = default;
 

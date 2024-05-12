@@ -9,21 +9,11 @@ namespace BrightLib.StateMachine.Runtime
     /// </summary>
     public abstract class FSM : MonoBehaviour
     {
-        protected readonly static List<Transition> _S_EMPTY_TRANSITIONS = new List<Transition>();
-
+        //EVENTS
         public event Action<State> OnStateEnter;
         public event Action<State> OnStateExit;
 
-        protected State _initialState;
-        protected State _currentState;
-
-        protected Dictionary<int, List<Transition>> _transitions = new Dictionary<int, List<Transition>>();
-
-        protected List<Transition> _currentStateTransitions = new List<Transition>();
-        protected List<Transition> _anyStateTransitions = new List<Transition>();
-
-        private float _timeEnteredState;
-
+        //PROPERTIES
         /// <summary>
         /// Time entered current state
         /// </summary>
@@ -38,6 +28,16 @@ namespace BrightLib.StateMachine.Runtime
         /// Current state
         /// </summary>
         public State CurrentState => _currentState;
+
+        //Private Fields
+        protected State _initialState;
+        protected State _currentState;
+        private float _timeEnteredState;
+
+        protected Dictionary<int, List<Transition>> _transitions = new Dictionary<int, List<Transition>>();
+        protected List<Transition> _currentStateTransitions = new List<Transition>();
+        protected List<Transition> _anyStateTransitions = new List<Transition>();
+        protected readonly static List<Transition> EMPTY_TRANSITIONS = new List<Transition>();
 
         public virtual void Update()
         {
@@ -82,7 +82,7 @@ namespace BrightLib.StateMachine.Runtime
 
             if (!_transitions.TryGetValue(_currentState.Id, out _currentStateTransitions))
             {
-                _currentStateTransitions = _S_EMPTY_TRANSITIONS;
+                _currentStateTransitions = EMPTY_TRANSITIONS;
             }
 
             _timeEnteredState = Time.time;

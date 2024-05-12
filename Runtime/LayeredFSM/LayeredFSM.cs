@@ -1,13 +1,15 @@
-﻿using BrightLib.StateMachine.Runtime;
+﻿using UnityEngine;
 
-/// <summary>
-/// Manages multiple FSMs
-/// </summary>
-public class LayeredFSM
+namespace BrightLib.StateMachine.Runtime
 {
-    //A layered FSM has at least one FSM
-    public FSM baseFSM;
+    /// <summary>
+    /// Manages multiple FSMs
+    /// </summary>
+    public sealed class LayeredFSM : MonoBehaviour
+    {
+        [SerializeField]
+        public FSM[] _fsms;
 
-    public FSM[] fsms;
 
+    }
 }

@@ -148,12 +148,12 @@ namespace BrightLib.StateMachine.Runtime
         {
             if (!_overlapTransitions.TryGetValue(state.Id, out _currentStateInfo.overlapTransitions))
             {
-                _currentStateInfo.overlapTransitions = _S_EMPTY_TRANSITIONS;
+                _currentStateInfo.overlapTransitions = EMPTY_TRANSITIONS;
             }
 
             if (!_quitTransitions.TryGetValue(state.Id, out _currentStateInfo.quitTransitions))
             {
-                _currentStateInfo.quitTransitions = _S_EMPTY_TRANSITIONS;
+                _currentStateInfo.quitTransitions = EMPTY_TRANSITIONS;
             }
         }
 
