@@ -4,19 +4,23 @@ using System.Collections.Generic;
 namespace BrightLib.StateMachine.Runtime
 {
     /// <summary>
-    /// A FSM that allows you to stack states to return to
+    /// A stack-based FSM 
     /// </summary>
+    /// <remarks>
+    /// Supports temporary state interruptions by pushing the current state
+    /// onto a stack and resuming it later. Recommended for Menu/Game state transitions.
+    /// </remarks>
     public class PushdownFSM : FSM
     {
         /// <summary>
-        /// Called when your return to a state that was overlapped
+        /// Invoked when a previously suspended state regains control.
         /// </summary>
-        public event Action<State> OnStateFocus;
+        public event Action<State> OnStateResume;
 
         /// <summary>
-        /// Called when a state is overlapped by another
+        /// Invoked when the current state is suspended due to a push.
         /// </summary>
-        public event Action<State> OnStateObscure;
+        public event Action<State> OnStateSuspend;
 
         protected Dictionary<int, List<Transition>> _overlapTransitions;
         protected Dictionary<int, List<Transition>> _quitTransitions;
@@ -53,7 +57,8 @@ namespace BrightLib.StateMachine.Runtime
         }
 
         /// <summary>
-        /// Will enter the <paramref name="toState"/> state and save the <paramref name="fromState"/> state on the stack
+        /// Pushes <paramref name="fromState"/> onto the stack and enters <paramref name="toState"/>
+        /// when the specified <paramref name="condition"/> evaluates to true.
         /// </summary>
         public void AddOverlapTransition(State fromState, State toState, Func<bool> condition)
         {
@@ -67,7 +72,8 @@ namespace BrightLib.StateMachine.Runtime
         }
 
         /// <summary>
-        /// Will exit the <paramref name="fromState"/> state and return the previous one on the stack
+        /// Pops the current state from the stack and resumes the previous state
+        /// when the specified <paramref name="condition"/> evaluates to true.
         /// </summary>
         public void AddQuitTransition(State fromState, Func<bool> condition)
         {
@@ -81,18 +87,19 @@ namespace BrightLib.StateMachine.Runtime
         }
 
         /// <summary>
-        /// Put current state on the stack and enter state <paramref name="targetState"/>
+        /// Suspends the current state by pushing it onto the stack,
+        /// then enters <paramref name="targetState"/>.
         /// </summary>
         private void OverlapState(State targetState)
         {
             _stack.Push(_currentState);
-            OnStateObscure?.Invoke(_currentState);
+            OnStateSuspend?.Invoke(_currentState);
             EnterState(targetState);
             UpdateCurrentStateInfo(targetState);
         }
 
         /// <summary>
-        /// Exit current state and return to previous one on the stack
+        /// Exits the current state and resumes the previous state from the stack.
         /// </summary>
         private void QuitCurrentState()
         {
@@ -100,15 +107,20 @@ namespace BrightLib.StateMachine.Runtime
 
             ExitCurrentState();
             _currentState = _stack.Pop();
-            OnStateFocus?.Invoke(_currentState);
+            OnStateResume?.Invoke(_currentState);
 
             UpdateCurrentStateInfo(_currentState);
         }
-
+        /// <summary>
+        /// Performs a hard transition:
+        /// <br/> - Exits the current state
+        /// <br/> - Clears the entire stack
+        /// <br/> - Enters <paramref name="targetState"/>
+        /// </summary>
         protected sealed override void ChangeState(State targetState)
         {
             ExitCurrentState();
-            while (_stack.Count > 0 && _stack.Peek() != null)
+            while (_stack.Count > 0)
             {
                 _stack.Pop().Exit();
             }
