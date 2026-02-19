@@ -2,9 +2,9 @@
 
 namespace BrightLib.StateMachine.Samples
 {
-    public class SearchState : ActorState
+    public class Search_EnemyState : ActorState
     {
-        public SearchState(Actor actor) : base(actor)
+        public Search_EnemyState(Actor actor) : base(actor)
         {
             
         }

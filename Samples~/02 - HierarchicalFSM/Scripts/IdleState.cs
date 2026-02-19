@@ -2,11 +2,12 @@
 
 namespace BrightLib.StateMachine.Samples
 {
-    public class HeatedUpState : State
+    public class IdleState : State
     {
         public override void Enter()
         {
 
         }
     }
+
 }

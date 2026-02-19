@@ -26,12 +26,12 @@ namespace BrightLib.StateMachine.Samples
 
         private void HandleStatExit(State state)
         {
-            Debug.Log($"Exit State \t{state.FullName()}");
+            Debug.Log($"Exit State \t{state.GetFullName()}");
         }
 
         private void HandleStateEnter(State state)
         {
-            Debug.Log($"Enter State \t{state.FullName()}");
+            Debug.Log($"Enter State \t{state.GetFullName()}");
         }
     }
 

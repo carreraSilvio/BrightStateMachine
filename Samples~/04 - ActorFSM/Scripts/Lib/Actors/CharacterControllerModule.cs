@@ -1,16 +1,14 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace BrightLib.StateMachine.Samples
 {
-    public class InputModule : ActorModule
+    public class CharacterControllerModule : ActorModule
     {
+        public bool IsMoving => _isMoving;
         private bool _isMoving;
 
         private float _horizontalAxis;
         private float _verticalAxis;
-
-        public bool IsMoving => _isMoving;
 
         private void Update()
         {

@@ -2,9 +2,9 @@
 
 namespace BrightLib.StateMachine.Samples
 {
-    public class MoveState : ActorState
+    public class Move_PlayerState : ActorState
     {
-        public MoveState(Actor actor) : base(actor)
+        public Move_PlayerState(Actor actor) : base(actor)
         {
         }
 

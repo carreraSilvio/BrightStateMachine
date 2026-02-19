@@ -7,6 +7,8 @@ namespace BrightLib.StateMachine.Samples
     {
         [SerializeField]
         private string _targetTag = "Player";
+        [SerializeField]
+        private float _stoppingTreshold = 2f;
 
         private Actor _target;
 
@@ -15,19 +17,43 @@ namespace BrightLib.StateMachine.Samples
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            var actor = collision.GetComponentInParent<Actor>();
-            if (actor.CompareTag(_targetTag))
+            var otherActor = collision.GetComponentInParent<Actor>();
+            if (otherActor.CompareTag(_targetTag) )
             {
-                _target = actor;
+                float distance = (otherActor.transform.position - Actor.transform.position).magnitude;
+                if (distance > _stoppingTreshold)
+                {
+                    _target = otherActor;
+                }
+            }
+        }
+
+        private void OnTriggerStay2D(Collider2D collision)
+        {
+            var otherActor = collision.GetComponentInParent<Actor>();
+            if (otherActor.CompareTag(_targetTag))
+            {
+                float distance = (otherActor.transform.position - Actor.transform.position).magnitude;
+                if (distance > _stoppingTreshold)
+                {
+                    _target = otherActor;
+                }
+                else
+                {
+                    _target = null;
+                }
             }
         }
 
         private void OnTriggerExit2D(Collider2D collision)
         {
-            if (_target == null) return;
-
-            var actor = collision.GetComponentInParent<Actor>();
-            if (actor.CompareTag(_target.tag))
+            if (_target == null)
+            {
+                return;
+            }
+             
+            var otherActor = collision.GetComponentInParent<Actor>();
+            if (otherActor.CompareTag(_target?.tag))
             {
                 _target = null;
             }

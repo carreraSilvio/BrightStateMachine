@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using NUnit.Framework;
+using UnityEngine;
 
 namespace BrightLib.StateMachine.Samples
 {
@@ -12,6 +13,7 @@ namespace BrightLib.StateMachine.Samples
         private void Awake()
         {
             _actor = GetComponentInParent<Actor>();
+            Assert.IsNotNull(_actor);
         }
     }
 }

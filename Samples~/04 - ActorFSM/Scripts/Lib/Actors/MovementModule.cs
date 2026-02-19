@@ -6,17 +6,11 @@ namespace BrightLib.StateMachine.Samples
     {
         [SerializeField]
         private float _speed = 50f;
-        
-        private bool _isMoving;
 
-        public bool IsMoving => _isMoving;
-
-        private void Update()
+        public void Move(Vector2 direction)
         {
-            _isMoving = Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow);
+            Move(direction.x, direction.y);
         }
-        public void Move(Vector2 direction) => Move(direction.x, direction.y);
-
         public void Move(float x, float y)
         {
             var pos = Actor.transform.position;
@@ -25,7 +19,6 @@ namespace BrightLib.StateMachine.Samples
 
             Actor.transform.position = pos;
         }
-
 
     }
 }

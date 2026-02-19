@@ -2,7 +2,7 @@
 
 namespace BrightLib.StateMachine.Samples
 {
-    public class OnState : CompositeState
+    public class LocomotionState : CompositeState
     {
 
     }

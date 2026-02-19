@@ -21,43 +21,42 @@ namespace BrightLib.StateMachine.Samples
             var audioOptionsState = new AudioOptionsState();
             var controlsState = new ControlsState();
 
-            AddOverlapTransition(homeState, optionsState, () => { return Input.GetKeyDown(KeyCode.Space); });
-
-            AddOverlapTransition(optionsState, controlsState, () => { return Input.GetKeyDown(KeyCode.Alpha1); });
-            AddOverlapTransition(optionsState, audioOptionsState, () => { return Input.GetKeyDown(KeyCode.Alpha2); });
-            AddReturnTransition(optionsState, () => { return Input.GetKeyDown(KeyCode.Escape); });
-
-            AddReturnTransition(controlsState, () => { return Input.GetKeyDown(KeyCode.Escape); });
-            AddReturnTransition(audioOptionsState, () => { return Input.GetKeyDown(KeyCode.Escape); });
+            AddPushTransition(homeState, optionsState, () => { return Input.GetKeyDown(KeyCode.Space); });
+            AddPushTransition(optionsState, controlsState, () => { return Input.GetKeyDown(KeyCode.Alpha1); });
+            AddPushTransition(optionsState, audioOptionsState, () => { return Input.GetKeyDown(KeyCode.Alpha2); });
+            
+            AddPopTransition(optionsState, () => { return Input.GetKeyDown(KeyCode.Escape); });
+            AddPopTransition(controlsState, () => { return Input.GetKeyDown(KeyCode.Escape); });
+            AddPopTransition(audioOptionsState, () => { return Input.GetKeyDown(KeyCode.Escape); });
 
             _initialState = homeState;
             
-            OnStateExit += HandleStatExit;
             OnStateEnter += HandleStateEnter;
-            OnStateFocus += HandleStateFocus;
-            OnStateObscure += HandleStateObscure;
+            OnStateExit += HandleStatExit;
+            OnStateResume += HandleStateResume;
+            OnStateSuspend += HandleStateSuspend;
 
             ChangeToInitialState();
         }
 
-        private void HandleStateObscure(State state)
+        private void HandleStateSuspend(State state)
         {
-            Debug.Log($"Obscure State \t{state.FullName()}");
+            Debug.Log($"Obscure State \t{state.GetFullName()}");
         }
 
-        private void HandleStateFocus(State state)
+        private void HandleStateResume(State state)
         {
-            Debug.Log($"Focus State \t{state.FullName()}");
+            Debug.Log($"Focus State \t{state.GetFullName()}");
         }
 
         private void HandleStatExit(State state)
         {
-            Debug.Log($"Exit State \t{state.FullName()}");
+            Debug.Log($"Exit State \t{state.GetFullName()}");
         }
 
         private void HandleStateEnter(State state)
         {
-            Debug.Log($"Enter State \t{state.FullName()}");
+            Debug.Log($"Enter State \t{state.GetFullName()}");
         }
 
     }

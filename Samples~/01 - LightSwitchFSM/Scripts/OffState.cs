@@ -1,6 +1,6 @@
 ﻿using BrightLib.StateMachine.Runtime;
 
-namespace BrightLib.StateMachine.Samples.FSMSample
+namespace BrightLib.StateMachine.Samples
 {
     public class OffState : State
     {
