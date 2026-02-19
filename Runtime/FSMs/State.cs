@@ -1,19 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace BrightLib.StateMachine.Runtime
 {
     /// <summary>
-    /// Basic state for <see cref="FSM"/>
+    /// Basic state for a <see cref="FSM"/>
     /// </summary>
-    [System.Serializable]
     public class State
     {
         public int Id => _id;
         public string DisplayName { get; set; }
         public CompositeState ParentState { get; private set; }
-
-        internal event Action<State> OnEnter;
-        internal event Action<State> OnExit;
 
         private static int UNIQUE_INSTANCE_ID;
         private readonly int _id = UNIQUE_INSTANCE_ID++;
@@ -34,15 +31,16 @@ namespace BrightLib.StateMachine.Runtime
         /// </summary>
         public string GetFullName()
         {
-            var fullName = "";
+            var stack = new Stack<string>();
             var state = this;
-            while (state.GetHasParentState())
+
+            while (state != null)
             {
-                fullName += state.ParentState.DisplayName + ".";
+                stack.Push(state.DisplayName);
                 state = state.ParentState;
             }
-            fullName += DisplayName;
-            return fullName;
+
+            return string.Join(".", stack);
         }
 
         internal void SetParent(CompositeState parentState)
@@ -50,30 +48,18 @@ namespace BrightLib.StateMachine.Runtime
             ParentState = parentState;
         }
 
-        public bool GetHasParentState()
+        public bool HasParentState()
         {
             return ParentState != null;
         }
 
-        public virtual void Enter()
-        {
-        }
-
-        public virtual void Update()
-        {
-        }
-
-        public virtual void LateUpdate()
-        {
-        }
-
-        public virtual void FixedUpdate()
-        {
-        }
-
-        public virtual void Exit()
-        {
-        }
+        public virtual void Enter() { }
+        public virtual void Exit() { }
+        public virtual void Resume() { }
+        public virtual void Suspend() { }
+        public virtual void Update() { }
+        public virtual void LateUpdate() { }
+        public virtual void FixedUpdate() { }
 
         public void Log(object message)
         {
@@ -84,8 +70,5 @@ namespace BrightLib.StateMachine.Runtime
         {
             return $"Id {_id}\t FullName {GetFullName()}";
         }
-
-        internal virtual void OnEnterInvoke() => OnEnter?.Invoke(this);
-        internal virtual void OnExitInvoke() => OnExit?.Invoke(this);
     }
 }

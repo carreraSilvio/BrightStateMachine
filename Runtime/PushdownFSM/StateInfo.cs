@@ -6,7 +6,7 @@ namespace BrightLib.StateMachine.Runtime
     {
         public State state;
 
-        public List<Transition> overlapTransitions;
-        public List<Transition> quitTransitions;
+        public List<Transition> pushTransitions;
+        public List<Transition> popTransitions;
     }
 }

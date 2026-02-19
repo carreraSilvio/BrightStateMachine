@@ -35,8 +35,8 @@ namespace BrightLib.StateMachine.Runtime
             _overlapTransitions = new Dictionary<int, List<Transition>>();
             _quitTransitions = new Dictionary<int, List<Transition>>();
 
-            _currentStateInfo.overlapTransitions = new List<Transition>();
-            _currentStateInfo.quitTransitions = new List<Transition>();
+            _currentStateInfo.pushTransitions = new List<Transition>();
+            _currentStateInfo.popTransitions = new List<Transition>();
         }
 
         public sealed override void Update()
@@ -45,13 +45,13 @@ namespace BrightLib.StateMachine.Runtime
             {
                 ChangeState(state);
             }
-            else if (CheckOverlapTransitions(out State targetState))
+            else if (CheckPushTransitions(out State targetState))
             {
-                OverlapState(targetState);
+                PushState(targetState);
             }
-            else if (CheckQuitTransitions())
+            else if (CheckPopTransitions())
             {
-                QuitCurrentState();
+                PopCurrentState();
             }
             _currentState.Update();
         }
@@ -60,7 +60,7 @@ namespace BrightLib.StateMachine.Runtime
         /// Pushes <paramref name="fromState"/> onto the stack and enters <paramref name="toState"/>
         /// when the specified <paramref name="condition"/> evaluates to true.
         /// </summary>
-        public void AddOverlapTransition(State fromState, State toState, Func<bool> condition)
+        public void AddPushTransition(State fromState, State toState, Func<bool> condition)
         {
             if (!_overlapTransitions.TryGetValue(fromState.Id, out List<Transition> currentOverlapTransition))
             {
@@ -75,7 +75,7 @@ namespace BrightLib.StateMachine.Runtime
         /// Pops the current state from the stack and resumes the previous state
         /// when the specified <paramref name="condition"/> evaluates to true.
         /// </summary>
-        public void AddQuitTransition(State fromState, Func<bool> condition)
+        public void AddPopTransition(State fromState, Func<bool> condition)
         {
             if (!_quitTransitions.TryGetValue(fromState.Id, out List<Transition> currentQuitTransitions))
             {
@@ -90,7 +90,7 @@ namespace BrightLib.StateMachine.Runtime
         /// Suspends the current state by pushing it onto the stack,
         /// then enters <paramref name="targetState"/>.
         /// </summary>
-        private void OverlapState(State targetState)
+        private void PushState(State targetState)
         {
             _stack.Push(_currentState);
             OnStateSuspend?.Invoke(_currentState);
@@ -101,9 +101,12 @@ namespace BrightLib.StateMachine.Runtime
         /// <summary>
         /// Exits the current state and resumes the previous state from the stack.
         /// </summary>
-        private void QuitCurrentState()
+        private void PopCurrentState()
         {
-            if (_stack.Count == 0) return;
+            if (_stack.Count == 0)
+            {
+                return;
+            }
 
             ExitCurrentState();
             _currentState = _stack.Pop();
@@ -111,6 +114,7 @@ namespace BrightLib.StateMachine.Runtime
 
             UpdateCurrentStateInfo(_currentState);
         }
+
         /// <summary>
         /// Performs a hard transition:
         /// <br/> - Exits the current state
@@ -128,9 +132,9 @@ namespace BrightLib.StateMachine.Runtime
             UpdateCurrentStateInfo(targetState);
         }
 
-        private bool CheckOverlapTransitions(out State result)
+        private bool CheckPushTransitions(out State result)
         {
-            foreach (var transition in _currentStateInfo.overlapTransitions)
+            foreach (var transition in _currentStateInfo.pushTransitions)
             {
                 if (transition.Condition())
                 {
@@ -143,9 +147,9 @@ namespace BrightLib.StateMachine.Runtime
             return false;
         }
 
-        private bool CheckQuitTransitions()
+        private bool CheckPopTransitions()
         {
-            foreach (var transition in _currentStateInfo.quitTransitions)
+            foreach (var transition in _currentStateInfo.popTransitions)
             {
                 if (transition.Condition())
                 {
@@ -158,14 +162,14 @@ namespace BrightLib.StateMachine.Runtime
 
         private void UpdateCurrentStateInfo(State state)
         {
-            if (!_overlapTransitions.TryGetValue(state.Id, out _currentStateInfo.overlapTransitions))
+            if (!_overlapTransitions.TryGetValue(state.Id, out _currentStateInfo.pushTransitions))
             {
-                _currentStateInfo.overlapTransitions = EMPTY_TRANSITIONS;
+                _currentStateInfo.pushTransitions = EMPTY_TRANSITIONS;
             }
 
-            if (!_quitTransitions.TryGetValue(state.Id, out _currentStateInfo.quitTransitions))
+            if (!_quitTransitions.TryGetValue(state.Id, out _currentStateInfo.popTransitions))
             {
-                _currentStateInfo.quitTransitions = EMPTY_TRANSITIONS;
+                _currentStateInfo.popTransitions = EMPTY_TRANSITIONS;
             }
         }
 

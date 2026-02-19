@@ -9,6 +9,8 @@ namespace BrightLib.StateMachine.Runtime
     /// </summary>
     public class FSM : MonoBehaviour
     {
+        public bool LogTransitions { get; set; }
+        public string DisplayName { get; set; }
         /// <summary>
         /// Invoked when a state is entered.
         /// </summary>
@@ -25,12 +27,12 @@ namespace BrightLib.StateMachine.Runtime
         public float TimeEnteredCurrentState => _timeEnteredState;
 
         /// <summary>
-        /// Elapsed time in current state
+        /// Time elapsed since it entered current state
         /// </summary>
-        public float ElapseTimeInCurrentState => Time.time - _timeEnteredState;
+        public float TimeElapsedInCurrentState => Time.time - _timeEnteredState;
 
         /// <summary>
-        /// Current state
+        /// State the FSM is in
         /// </summary>
         public State CurrentState => _currentState;
 
@@ -42,6 +44,11 @@ namespace BrightLib.StateMachine.Runtime
         protected List<Transition> _currentStateTransitions = new List<Transition>();
         protected List<Transition> _anyStateTransitions = new List<Transition>();
         protected readonly static List<Transition> EMPTY_TRANSITIONS = new List<Transition>();
+
+        private void Awake()
+        {
+            DisplayName = "FSM";
+        }
 
         public virtual void Update()
         {
@@ -80,7 +87,10 @@ namespace BrightLib.StateMachine.Runtime
 
         protected virtual void EnterState(State targetState)
         {
-            if (targetState == _currentState) return;
+            if (targetState == _currentState)
+            {
+                return;
+            }
 
             _currentState = targetState;
 
@@ -89,24 +99,28 @@ namespace BrightLib.StateMachine.Runtime
                 _currentStateTransitions = EMPTY_TRANSITIONS;
             }
 
+            Log($"Enter State \t{_currentState.GetFullName()}");
             _timeEnteredState = Time.time;
-            _currentState.OnEnterInvoke();
             _currentState.Enter();
             OnStateEnter?.Invoke(_currentState);
         }
 
         protected virtual void ExitCurrentState()
         {
-            if (_currentState == null) return;
+            if (_currentState == null)
+            {
+                return;
+            }
 
-            _currentState.OnExitInvoke();
+            Log($"Exit State \t{_currentState.GetFullName()}");
             _currentState.Exit();
             OnStateExit?.Invoke(_currentState);
             _currentState = null;
         }
 
         /// <summary>
-        /// Transition between <paramref name="from"/> and <paramref name="to"/> states if <paramref name="condition"/> is met
+        /// Adds a transition between <paramref name="from"/> and 
+        /// <paramref name="to"/> states if <paramref name="condition"/> is met
         /// </summary>
         public void AddTransition(State from, State to, Func<bool> condition)
         {
@@ -128,7 +142,7 @@ namespace BrightLib.StateMachine.Runtime
         {
             //Check parent state transition
             var state = _currentState;
-            while (state.GetHasParentState())
+            while (state.HasParentState())
             {
                 state = state.ParentState;
                 if (_transitions.TryGetValue(state.Id, out List<Transition> parentStateTransitions))
@@ -175,6 +189,14 @@ namespace BrightLib.StateMachine.Runtime
                 return compositeState.GetLeafState();
             }
             return state;
+        }
+
+        private void Log(object message)
+        {
+            if(LogTransitions)
+            {
+                Debug.Log($"{DisplayName}: {message}");
+            }
         }
     }
 
