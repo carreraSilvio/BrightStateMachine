@@ -7,29 +7,29 @@
   "unityRelease": "15f1",
   "author": 
   {
-    "name": "Silvio Carréra",
+    "name": "Silvio Carrera",
     "url": "https://github.com/carreraSilvio/BrightStateMachine"
   },
   "samples": 
   [
     {
         "displayName": "01 - LightSwitchFSM",
-        "description": "Simple light switch",
+        "description": "Simple FSM that demonstrates transitions between two states: ON and OFF.",
         "path": "Samples~/01 - LightSwitchFSM"
     },
     {
-        "displayName": "02 - OvenHFSM",
-        "description": "Oven HFSM with composite state transitions.",
-        "path": "Samples~/02 - OvenHFSM"
+        "displayName": "02 - HierarchicalFSM",
+        "description": "HierarchicalFSM that demonstrates how to create a state with sub states to reduce transitions.",
+        "path": "Samples~/02 - HierarchicalFSM"
     },
     {
         "displayName": "03 - MenuFSM",
-        "description": "Menu with a pushdown FSM that allows to keep a history of states.",
+        "description": "PushdownFSM that demonstrates how to push and pop states to preserve history.",
         "path": "Samples~/03 - MenuFSM"
     },
     {
         "displayName": "04 - ActorFSM",
-        "description": "Player and enemy being controlled by FSM and sharing behaviors.",
+        "description": "Complex FSM with generic type FSM<Actor> demonstrating how to separate state from behaviour.",
         "path": "Samples~/04 - ActorFSM"
     },
     {
