@@ -2,7 +2,7 @@
   "name": "com.brightlib.fsms",
   "version": "1.0.0",
   "displayName": "Bright FSM",
-  "description": "FSM to control flow, menus and actors ingame.",
+  "description": "Different FSM designs to control characters, menus and game flow.",
   "unity": "2018.2",
   "unityRelease": "15f1",
   "author": 
