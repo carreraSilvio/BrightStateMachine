@@ -9,11 +9,16 @@ namespace BrightLib.StateMachine.Runtime
     /// </summary>
     public class FSM : MonoBehaviour
     {
-        //EVENTS
+        /// <summary>
+        /// Invoked when a state is entered.
+        /// </summary>
         public event Action<State> OnStateEnter;
+
+        /// <summary>
+        /// Invoked when a state is exited.
+        /// </summary>
         public event Action<State> OnStateExit;
 
-        //PROPERTIES
         /// <summary>
         /// Time entered current state
         /// </summary>
@@ -29,7 +34,6 @@ namespace BrightLib.StateMachine.Runtime
         /// </summary>
         public State CurrentState => _currentState;
 
-        //Private Fields
         protected State _initialState;
         protected State _currentState;
         private float _timeEnteredState;

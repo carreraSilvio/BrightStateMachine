@@ -5,14 +5,15 @@ namespace BrightLib.StateMachine.Runtime
     /// <summary>
     /// Basic state for <see cref="FSM"/>
     /// </summary>
+    [System.Serializable]
     public class State
     {
         public int Id => _id;
         public string DisplayName { get; set; }
         public CompositeState ParentState { get; private set; }
 
-        public event Action<State> OnEnter;
-        public event Action<State> OnExit;
+        internal event Action<State> OnEnter;
+        internal event Action<State> OnExit;
 
         private static int UNIQUE_INSTANCE_ID;
         private readonly int _id = UNIQUE_INSTANCE_ID++;
