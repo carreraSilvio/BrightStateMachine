@@ -7,7 +7,7 @@ namespace BrightLib.StateMachine.Runtime
     /// <summary>
     /// Core FSM class
     /// </summary>
-    public abstract class FSM : MonoBehaviour
+    public class FSM : MonoBehaviour
     {
         //EVENTS
         public event Action<State> OnStateEnter;
@@ -124,7 +124,7 @@ namespace BrightLib.StateMachine.Runtime
         {
             //Check parent state transition
             var state = _currentState;
-            while (state.HasParentState)
+            while (state.GetHasParentState())
             {
                 state = state.ParentState;
                 if (_transitions.TryGetValue(state.Id, out List<Transition> parentStateTransitions))

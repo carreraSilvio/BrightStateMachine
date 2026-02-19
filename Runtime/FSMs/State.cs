@@ -7,17 +7,15 @@ namespace BrightLib.StateMachine.Runtime
     /// </summary>
     public class State
     {
-        private static int UNIQUE_INSTANCE_ID;
-
-        private readonly int _id = UNIQUE_INSTANCE_ID++;
-
-        public CompositeState ParentState { get; private set; }
-        public bool HasParentState => ParentState != null;
         public int Id => _id;
         public string DisplayName { get; set; }
+        public CompositeState ParentState { get; private set; }
 
         public event Action<State> OnEnter;
         public event Action<State> OnExit;
+
+        private static int UNIQUE_INSTANCE_ID;
+        private readonly int _id = UNIQUE_INSTANCE_ID++;
 
         public State()
         {
@@ -30,14 +28,14 @@ namespace BrightLib.StateMachine.Runtime
         }
 
         /// <summary>
-        /// Return state name up to the the root of the FSM. 
-        /// Eg: ParentStateName.SubParentStateName.StateName
+        /// Get state name up to the the root of the FSM. 
+        /// <br/>Eg: ParentStateName.SubParentStateName.StateName
         /// </summary>
-        public string FullName()
+        public string GetFullName()
         {
             var fullName = "";
             var state = this;
-            while (state.HasParentState)
+            while (state.GetHasParentState())
             {
                 fullName += state.ParentState.DisplayName + ".";
                 state = state.ParentState;
@@ -51,34 +49,40 @@ namespace BrightLib.StateMachine.Runtime
             ParentState = parentState;
         }
 
+        public bool GetHasParentState()
+        {
+            return ParentState != null;
+        }
+
         public virtual void Enter()
         {
-
         }
 
         public virtual void Update()
         {
-
         }
 
         public virtual void LateUpdate()
         {
-
         }
 
         public virtual void FixedUpdate()
         {
-
         }
 
         public virtual void Exit()
         {
-
         }
 
-        public void Log(object message) => UnityEngine.Debug.Log(message);
+        public void Log(object message)
+        {
+            UnityEngine.Debug.Log(message);
+        }
 
-        public override string ToString() => $"Id {_id}\t FullName {FullName()}";
+        public override string ToString()
+        {
+            return $"Id {_id}\t FullName {GetFullName()}";
+        }
 
         internal virtual void OnEnterInvoke() => OnEnter?.Invoke(this);
         internal virtual void OnExitInvoke() => OnExit?.Invoke(this);
