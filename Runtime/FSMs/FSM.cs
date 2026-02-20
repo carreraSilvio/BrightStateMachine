@@ -9,6 +9,17 @@ namespace BrightLib.StateMachine.Runtime
     /// </summary>
     public class FSM : MonoBehaviour
     {
+        /// <summary>
+        /// If true, this FSM will update itself.
+        /// </summary>
+        [SerializeField]
+        private bool _autoUpdate = true;
+        /// <summary>
+        /// Lower order FSMs are run first in a <see cref="LayeredFSM"/>.
+        /// </summary>
+        [SerializeField]
+        private int _priority = 0;
+
         public bool LogTransitions { get; set; }
         public string DisplayName { get; set; }
         /// <summary>
@@ -36,6 +47,11 @@ namespace BrightLib.StateMachine.Runtime
         /// </summary>
         public State CurrentState => _currentState;
 
+        /// <summary>
+        /// Higher priority FSMs are run first in a <see cref="LayeredFSM"/>.
+        /// </summary>
+        public int Priority => _priority;
+
         protected State _initialState;
         protected State _currentState;
         private float _timeEnteredState;
@@ -52,7 +68,31 @@ namespace BrightLib.StateMachine.Runtime
             DisplayName = "FSM";
         }
 
-        public virtual void Update()
+        public void Update()
+        {
+            if(_autoUpdate)
+            {
+                Tick();
+            }
+        }
+
+        public void LateUpdate()
+        {
+            if (_autoUpdate)
+            {
+                LateTick();
+            }
+        }
+
+        public void FixedUpdate()
+        {
+            if (_autoUpdate)
+            {
+                FixedTick();
+            }
+        }
+
+        internal virtual void Tick()
         {
             if (CheckTransitions(out State state))
             {
@@ -61,12 +101,12 @@ namespace BrightLib.StateMachine.Runtime
             _currentState.Update();
         }
 
-        public void LateUpdate()
+        internal void LateTick()
         {
             _currentState.LateUpdate();
         }
 
-        public void FixedUpdate()
+        internal void FixedTick()
         {
             _currentState.FixedUpdate();
         }

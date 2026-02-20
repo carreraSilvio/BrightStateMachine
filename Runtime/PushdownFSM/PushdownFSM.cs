@@ -39,7 +39,7 @@ namespace BrightLib.StateMachine.Runtime
             _currentStateInfo.popTransitions = new List<Transition>();
         }
 
-        public sealed override void Update()
+        internal sealed override void Tick()
         {
             if (CheckTransitions(out State state))
             {

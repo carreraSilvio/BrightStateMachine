@@ -1,5 +1,6 @@
 {
-    "name": "BrightLib.FSMs.Runtime",
+    "name": "BrightLib.StateMachine.Runtime",
+    "rootNamespace": "BrightLib.StateMachine.Runtime",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
