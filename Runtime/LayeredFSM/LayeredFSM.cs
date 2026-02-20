@@ -9,7 +9,7 @@ namespace BrightLib.StateMachine.Runtime
     [DisallowMultipleComponent]
     public sealed class LayeredFSM : MonoBehaviour
     {
-        private FSM[] _layers;
+        private FSM[] _fsms;
 
         private bool _firstFrame = true;
 
@@ -17,22 +17,22 @@ namespace BrightLib.StateMachine.Runtime
         {
             if(_firstFrame)
             {
-                _layers = GetComponents<FSM>()
+                _fsms = GetComponents<FSM>()
                 .OrderByDescending(fsm => fsm.Priority)
                 .ToArray();
 
-                foreach (var fsm in _layers)
+                foreach (var fsm in _fsms)
                 {
                     fsm.ChangeToInitialState();
                 }
                 _firstFrame = false;
             }
 
-            if (_layers == null)
+            if (_fsms == null)
             {
                 return;
             }
-            foreach (var fsm in _layers)
+            foreach (var fsm in _fsms)
             {
                 fsm.Tick();
             }
@@ -40,11 +40,11 @@ namespace BrightLib.StateMachine.Runtime
 
         private void LateUpdate()
         {
-            if(_layers == null)
+            if(_fsms == null)
             {
                 return;
             }
-            foreach (var fsm in _layers)
+            foreach (var fsm in _fsms)
             {
                 fsm.LateTick();
             }
@@ -52,11 +52,11 @@ namespace BrightLib.StateMachine.Runtime
 
         private void FixedUpdate()
         {
-            if (_layers == null)
+            if (_fsms == null)
             {
                 return;
             }
-            foreach (var fsm in _layers)
+            foreach (var fsm in _fsms)
             {
                 fsm.FixedTick();
             }

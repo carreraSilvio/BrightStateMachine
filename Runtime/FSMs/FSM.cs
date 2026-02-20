@@ -42,10 +42,6 @@ namespace BrightLib.StateMachine.Runtime
         /// </summary>
         public float TimeElapsedInCurrentState => Time.time - _timeEnteredState;
 
-        /// <summary>
-        /// State the FSM is in
-        /// </summary>
-        public State CurrentState => _currentState;
 
         /// <summary>
         /// Higher priority FSMs are run first in a <see cref="LayeredFSM"/>.
@@ -54,6 +50,8 @@ namespace BrightLib.StateMachine.Runtime
 
         protected State _initialState;
         protected State _currentState;
+        private string _initialStateDisplayName;
+        private string _currentStateDisplayName;
         private float _timeEnteredState;
 
         protected Dictionary<Type, State> _states = new Dictionary<Type, State>();
@@ -123,6 +121,7 @@ namespace BrightLib.StateMachine.Runtime
         public void SetInitialState(State initialState)
         {
             _initialState = initialState;
+            _initialStateDisplayName = _initialState.DisplayName;
         }
 
         public void ChangeToInitialState()
@@ -144,6 +143,7 @@ namespace BrightLib.StateMachine.Runtime
             }
 
             _currentState = targetState;
+            _currentStateDisplayName = _currentState.DisplayName;
 
             if (!_transitions.TryGetValue(_currentState.Id, out _currentStateTransitions))
             {
@@ -167,6 +167,7 @@ namespace BrightLib.StateMachine.Runtime
             _currentState.Exit();
             OnStateExit?.Invoke(_currentState);
             _currentState = null;
+            _currentStateDisplayName = "null";
         }
 
         /// <summary>
