@@ -57,9 +57,9 @@ namespace BrightLib.StateMachine.Runtime
         public virtual void Exit() { }
         public virtual void Resume() { }
         public virtual void Suspend() { }
-        public virtual void Update() { }
-        public virtual void LateUpdate() { }
-        public virtual void FixedUpdate() { }
+        public virtual void Tick() { }
+        public virtual void LateTick() { }
+        public virtual void FixedTick() { }
 
         public void Log(object message)
         {

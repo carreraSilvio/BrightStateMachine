@@ -98,17 +98,17 @@ namespace BrightLib.StateMachine.Runtime
             {
                 ChangeState(state);
             }
-            _currentState.Update();
+            _currentState.Tick();
         }
 
         internal void LateTick()
         {
-            _currentState.LateUpdate();
+            _currentState.LateTick();
         }
 
         internal void FixedTick()
         {
-            _currentState.FixedUpdate();
+            _currentState.FixedTick();
         }
 
         public void AddState(State state)

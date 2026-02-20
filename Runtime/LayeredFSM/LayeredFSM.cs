@@ -11,20 +11,27 @@ namespace BrightLib.StateMachine.Runtime
     {
         private FSM[] _layers;
 
-        private void Start()
-        {
-            _layers = GetComponents<FSM>()
-                .OrderByDescending(fsm => fsm.Priority)
-                .ToArray();
-
-            foreach (var fsm in _layers)
-            {
-                fsm.ChangeToInitialState();
-            }
-        }
+        private bool _firstFrame = true;
 
         private void Update()
         {
+            if(_firstFrame)
+            {
+                _layers = GetComponents<FSM>()
+                .OrderByDescending(fsm => fsm.Priority)
+                .ToArray();
+
+                foreach (var fsm in _layers)
+                {
+                    fsm.ChangeToInitialState();
+                }
+                _firstFrame = false;
+            }
+
+            if (_layers == null)
+            {
+                return;
+            }
             foreach (var fsm in _layers)
             {
                 fsm.Tick();
@@ -33,6 +40,10 @@ namespace BrightLib.StateMachine.Runtime
 
         private void LateUpdate()
         {
+            if(_layers == null)
+            {
+                return;
+            }
             foreach (var fsm in _layers)
             {
                 fsm.LateTick();
@@ -41,21 +52,14 @@ namespace BrightLib.StateMachine.Runtime
 
         private void FixedUpdate()
         {
+            if (_layers == null)
+            {
+                return;
+            }
             foreach (var fsm in _layers)
             {
                 fsm.FixedTick();
             }
-        }
-
-        public T GetLayer<T>() where T : FSM
-        {
-            foreach (var fsm in _layers)
-            {
-                if (fsm is T typed)
-                    return typed;
-            }
-
-            return null;
         }
 
     }

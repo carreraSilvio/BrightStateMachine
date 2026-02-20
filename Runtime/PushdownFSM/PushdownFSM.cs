@@ -53,7 +53,7 @@ namespace BrightLib.StateMachine.Runtime
             {
                 PopCurrentState();
             }
-            _currentState.Update();
+            _currentState.Tick();
         }
 
         /// <summary>

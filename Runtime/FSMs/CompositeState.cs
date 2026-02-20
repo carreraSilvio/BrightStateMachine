@@ -59,12 +59,12 @@ namespace BrightLib.StateMachine.Runtime
             //NA
         }
 
-        public override void Update()
+        public override void Tick()
         {
             //NA
         }
 
-        public override void LateUpdate()
+        public override void LateTick()
         {
             //NA
         }
