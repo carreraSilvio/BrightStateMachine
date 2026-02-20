@@ -40,6 +40,8 @@ namespace BrightLib.StateMachine.Runtime
         protected State _currentState;
         private float _timeEnteredState;
 
+        protected Dictionary<Type, State> _states = new Dictionary<Type, State>();
+
         protected Dictionary<int, List<Transition>> _transitions = new Dictionary<int, List<Transition>>();
         protected List<Transition> _currentStateTransitions = new List<Transition>();
         protected List<Transition> _anyStateTransitions = new List<Transition>();
@@ -67,6 +69,15 @@ namespace BrightLib.StateMachine.Runtime
         public void FixedUpdate()
         {
             _currentState.FixedUpdate();
+        }
+
+        public void AddState(State state)
+        {
+            if(_states.ContainsKey(state.GetType()))
+            {
+                return;
+            }
+            _states.Add(state.GetType(), state);
         }
 
         public void SetInitialState(State initialState)
@@ -119,18 +130,20 @@ namespace BrightLib.StateMachine.Runtime
         }
 
         /// <summary>
-        /// Adds a transition between <paramref name="from"/> and 
-        /// <paramref name="to"/> states if <paramref name="condition"/> is met
+        /// Adds a transition between <paramref name="fromState"/> and 
+        /// <paramref name="toState"/> states if <paramref name="condition"/> is met
         /// </summary>
-        public void AddTransition(State from, State to, Func<bool> condition)
+        public void AddTransition(State fromState, State toState, Func<bool> condition)
         {
-            if (!_transitions.TryGetValue(from.Id, out List<Transition> currentTransitions))
+            AddState(fromState);
+            AddState(toState);
+            if (!_transitions.TryGetValue(fromState.Id, out List<Transition> currentTransitions))
             {
                 currentTransitions = new List<Transition>();
-                _transitions.Add(from.Id, currentTransitions);
+                _transitions.Add(fromState.Id, currentTransitions);
             }
 
-            currentTransitions.Add(new Transition(to, condition));
+            currentTransitions.Add(new Transition(toState, condition));
         }
 
         public void AddAnyTransition(State to, Func<bool> condition)
@@ -191,7 +204,7 @@ namespace BrightLib.StateMachine.Runtime
             return state;
         }
 
-        private void Log(object message)
+        protected void Log(object message)
         {
             if(LogTransitions)
             {

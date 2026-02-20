@@ -62,6 +62,8 @@ namespace BrightLib.StateMachine.Runtime
         /// </summary>
         public void AddPushTransition(State fromState, State toState, Func<bool> condition)
         {
+            AddState(fromState);
+            AddState(toState);
             if (!_overlapTransitions.TryGetValue(fromState.Id, out List<Transition> currentOverlapTransition))
             {
                 currentOverlapTransition = new List<Transition>();
@@ -77,6 +79,7 @@ namespace BrightLib.StateMachine.Runtime
         /// </summary>
         public void AddPopTransition(State fromState, Func<bool> condition)
         {
+            AddState(fromState);
             if (!_quitTransitions.TryGetValue(fromState.Id, out List<Transition> currentQuitTransitions))
             {
                 currentQuitTransitions = new List<Transition>();
@@ -86,6 +89,12 @@ namespace BrightLib.StateMachine.Runtime
             currentQuitTransitions.Add(new QuitTransition(condition));
         }
 
+        public void RequestPushState<T>() where T : State
+        {
+            var targetState = _states[typeof(T)];
+            PushState(targetState);
+        }
+
         /// <summary>
         /// Suspends the current state by pushing it onto the stack,
         /// then enters <paramref name="targetState"/>.
@@ -93,6 +102,8 @@ namespace BrightLib.StateMachine.Runtime
         private void PushState(State targetState)
         {
             _stack.Push(_currentState);
+            Log($"Suspend State \t{_currentState.GetFullName()}");
+            _currentState.Suspend();
             OnStateSuspend?.Invoke(_currentState);
             EnterState(targetState);
             UpdateCurrentStateInfo(targetState);
@@ -110,6 +121,8 @@ namespace BrightLib.StateMachine.Runtime
 
             ExitCurrentState();
             _currentState = _stack.Pop();
+            _currentState.Resume();
+            Log($"Resume State \t{_currentState.GetFullName()}");
             OnStateResume?.Invoke(_currentState);
 
             UpdateCurrentStateInfo(_currentState);
