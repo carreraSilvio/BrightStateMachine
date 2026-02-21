@@ -1,5 +1,4 @@
-﻿using MacFsWatcher;
-using System;
+﻿using System;
 using System.Linq;
 using UnityEngine;
 
@@ -12,7 +11,7 @@ namespace BrightLib.StateMachine.Runtime
     public sealed class LayeredFSM : MonoBehaviour
     {
         private FSM[] _fsms;
-        private FSMEventManager _eventManager = new FSMEventManager();
+        private readonly FSMEventManager _eventManager = new FSMEventManager();
 
         private bool _firstFrame = true;
 
