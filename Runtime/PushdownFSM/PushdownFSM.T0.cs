@@ -12,7 +12,7 @@ namespace BrightLib.StateMachine.Runtime
         public T0 Component => _component;
         public GameObject GameObject => _component.gameObject;
 
-        public PushdownFSM(T0 component) : base()
+        public PushdownFSM(T0 component)
         {
             _component = component;
         }

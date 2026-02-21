@@ -8,7 +8,7 @@ namespace BrightLib.StateMachine.Runtime
         public GameObject GameObject => _component.gameObject;
         private readonly T0 _component;
 
-        public State(T0 component) : base()
+        public State(T0 component)
         {
             _component = component;
         }
