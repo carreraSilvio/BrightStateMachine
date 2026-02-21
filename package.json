@@ -1,8 +1,8 @@
 {
   "name": "com.brightlib.fsms",
-  "version": "1.0.0",
-  "displayName": "Bright FSM",
-  "description": "Different FSM designs to control characters, menus and game flow.",
+  "version": "2.0.0",
+  "displayName": "Bright FSMs",
+  "description": "A flexible collection of finite state machine architectures for controlling characters, UI, and overall game flow.",
   "unity": "2018.2",
   "unityRelease": "15f1",
   "author": 
@@ -33,9 +33,9 @@
         "path": "Samples~/04 - ActorFSM"
     },
     {
-        "displayName": "05 - BattleSystem",
-        "description": "Simple battle sytstem with states .",
-        "path": "Samples~/05 - BattleSystem"
+        "displayName": "05 - LayeredFSM",
+        "description": "LayeredFSM example where one Actor has multiple FSMs working together and comunicating via events.",
+        "path": "Samples~/05 - LayeredFSM"
     }
   ]
 }
