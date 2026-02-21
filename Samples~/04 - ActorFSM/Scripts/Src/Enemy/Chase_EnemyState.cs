@@ -23,7 +23,7 @@ namespace BrightLib.StateMachine.Samples
             }
         }
 
-        public override void Update()
+        public override void Tick()
         {
             var direction = (_searchModule.TargetPosition - Actor.transform.position).normalized;
             _movementModule.Move(direction);

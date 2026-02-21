@@ -9,7 +9,7 @@ namespace BrightLib.StateMachine.Samples
             
         }
 
-        public override void Update()
+        public override void Tick()
         {
             
         }

@@ -8,7 +8,7 @@ namespace BrightLib.StateMachine.Samples
         {
         }
 
-        public override void Update()
+        public override void Tick()
         {
             var input = Input.GetAxis("Horizontal");
             var vertical = Input.GetAxis("Vertical");
