@@ -10,18 +10,28 @@ namespace BrightLib.StateMachine.Runtime
     public class FSM : MonoBehaviour
     {
         /// <summary>
-        /// If true, this FSM will update itself.
-        /// </summary>
-        [SerializeField]
-        private bool _autoUpdate = true;
-        /// <summary>
         /// Lower order FSMs are run first in a <see cref="LayeredFSM"/>.
         /// </summary>
         [SerializeField]
         private int _priority = 0;
 
-        public bool LogTransitions { get; set; }
+        /// <summary>
+        /// Descriptive name for the FSM.
+        /// </summary>
         public string DisplayName { get; set; }
+        /// <summary>
+        /// If true, it will log the state transitions.
+        /// </summary>
+        public bool LogTransitions { get; set; }
+        /// <summary>
+        /// If true, it will run Tick, LateTick and FixedTick. Otherwise it will skip it.
+        /// </summary>
+        public bool Running { get; set; } = true;
+        /// <summary>
+        /// If true, it will update itseful. Used when part of a LayeredFSM.
+        /// </summary>
+        internal bool AutoUpdate { get; set; } = true;
+
         /// <summary>
         /// Invoked when a state is entered.
         /// </summary>
@@ -42,7 +52,6 @@ namespace BrightLib.StateMachine.Runtime
         /// </summary>
         public float TimeElapsedInCurrentState => Time.time - _timeEnteredState;
 
-
         /// <summary>
         /// Higher priority FSMs are run first in a <see cref="LayeredFSM"/>.
         /// </summary>
@@ -60,6 +69,7 @@ namespace BrightLib.StateMachine.Runtime
         protected List<Transition> _currentStateTransitions = new List<Transition>();
         protected List<Transition> _anyStateTransitions = new List<Transition>();
         protected readonly static List<Transition> EMPTY_TRANSITIONS = new List<Transition>();
+        private FSMEventManager _eventManager;
 
         private void Awake()
         {
@@ -68,30 +78,37 @@ namespace BrightLib.StateMachine.Runtime
 
         public void Update()
         {
-            if(_autoUpdate)
+            if(!AutoUpdate)
             {
-                Tick();
+                return;
             }
+            Tick();
         }
 
         public void LateUpdate()
         {
-            if (_autoUpdate)
+            if (!AutoUpdate)
             {
-                LateTick();
+                return;
             }
+            LateTick();
         }
 
         public void FixedUpdate()
         {
-            if (_autoUpdate)
+            if (!AutoUpdate)
             {
-                FixedTick();
+                return;
             }
+            FixedTick();
         }
 
         internal virtual void Tick()
         {
+            if(!Running)
+            {
+                return;
+            }
             if (CheckTransitions(out State state))
             {
                 ChangeState(state);
@@ -101,12 +118,31 @@ namespace BrightLib.StateMachine.Runtime
 
         internal void LateTick()
         {
+            if (!Running)
+            {
+                return;
+            }
             _currentState.LateTick();
         }
 
         internal void FixedTick()
         {
+            if (!Running)
+            {
+                return;
+            }
             _currentState.FixedTick();
+        }
+
+        internal void InjectEventManager(FSMEventManager manager)
+        {
+            _eventManager = manager;
+
+            // Inject into existing states
+            foreach (var state in _states.Values)
+            {
+                state.InjectEventManager(manager);
+            }
         }
 
         public void AddState(State state)
@@ -116,6 +152,11 @@ namespace BrightLib.StateMachine.Runtime
                 return;
             }
             _states.Add(state.GetType(), state);
+
+            if (_eventManager != null)
+            {
+                state.InjectEventManager(_eventManager);
+            }
         }
 
         public void SetInitialState(State initialState)
@@ -252,6 +293,8 @@ namespace BrightLib.StateMachine.Runtime
                 Debug.Log($"{DisplayName}: {message}");
             }
         }
+
+
     }
 
 }

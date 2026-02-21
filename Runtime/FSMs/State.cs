@@ -11,7 +11,9 @@ namespace BrightLib.StateMachine.Runtime
         public int Id => _id;
         public string DisplayName { get; set; }
         public CompositeState ParentState { get; private set; }
+        protected FSMEventManager FSMEventBus => _fsmEventBus;
 
+        private FSMEventManager _fsmEventBus;
         private static int UNIQUE_INSTANCE_ID;
         private readonly int _id = UNIQUE_INSTANCE_ID++;
 
@@ -51,6 +53,11 @@ namespace BrightLib.StateMachine.Runtime
         public bool HasParentState()
         {
             return ParentState != null;
+        }
+
+        internal void InjectEventManager(FSMEventManager fsmEventBus)
+        {
+            _fsmEventBus = fsmEventBus;
         }
 
         public virtual void Enter() { }

@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using MacFsWatcher;
+using System;
+using System.Linq;
 using UnityEngine;
 
 namespace BrightLib.StateMachine.Runtime
@@ -10,17 +12,37 @@ namespace BrightLib.StateMachine.Runtime
     public sealed class LayeredFSM : MonoBehaviour
     {
         private FSM[] _fsms;
+        private FSMEventManager _eventManager = new FSMEventManager();
 
         private bool _firstFrame = true;
+
+        private void Start()
+        {
+            _fsms = GetComponents<FSM>()
+            .OrderByDescending(fsm => fsm.Priority)
+            .ToArray();
+
+            foreach (var fsm in _fsms)
+            {
+                fsm.InjectEventManager(_eventManager);
+                fsm.AutoUpdate = false;
+            }
+        }
+
+        private void OnEnable()
+        {
+            _eventManager.OnSetFSMRunning += HandleSetFSMRunning;
+        }
+
+        private void OnDisable()
+        {
+            _eventManager.OnSetFSMRunning -= HandleSetFSMRunning;
+        }
 
         private void Update()
         {
             if(_firstFrame)
             {
-                _fsms = GetComponents<FSM>()
-                .OrderByDescending(fsm => fsm.Priority)
-                .ToArray();
-
                 foreach (var fsm in _fsms)
                 {
                     fsm.ChangeToInitialState();
@@ -62,5 +84,14 @@ namespace BrightLib.StateMachine.Runtime
             }
         }
 
+        private void HandleSetFSMRunning(Type fsmType, bool running)
+        {
+            var target = _fsms.FirstOrDefault(f => f.GetType() == fsmType);
+
+            if (target != null)
+            {
+                target.Running = running;
+            }
+        }
     }
 }
